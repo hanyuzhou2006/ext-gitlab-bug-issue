@@ -1,0 +1,56 @@
+import { translateProjectUrl } from "./util";
+export async function uploadImage(projectAddress: string, privateToken: string, file: Blob) {
+  const projectApiUrl = translateProjectUrl(projectAddress);
+  const formData = new FormData();
+  formData.append('file', file, 'screenshot.png');
+  const res = await fetch(`${projectApiUrl}/uploads`, {
+    method: 'POST',
+    headers: {
+      'PRIVATE-TOKEN': privateToken
+    },
+    redirect: 'follow',
+    body: formData
+  });
+  if (res.status >= 200 && res.status < 400) {
+    const data = await res.json();
+    return data.markdown;
+  } else {
+    try {
+      const data = await res.json();
+      console.log(data);
+      throw new Error(JSON.stringify(data.message));
+    } catch (_e) {
+      throw new Error(`upload image failed, status: ${res.status}`);
+    }
+  }
+
+}
+
+export async function newIssue(projectAddress: string, privateToken: string, title: string, markdown: string) {
+  const description = markdown;
+  const projectApiUrl = translateProjectUrl(projectAddress);
+  const res = await fetch(`${projectApiUrl}/issues`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'PRIVATE-TOKEN': privateToken
+    },
+    body: JSON.stringify({
+      title,
+      description
+    })
+  })
+  if (res.status >= 200 && res.status < 400) {
+    const data = await res.json();
+    return data;
+  } else {
+    try {
+      const data = await res.json();
+      console.log(data);
+      throw new Error(JSON.stringify(data.message));
+    } catch (_e) {
+      throw new Error(`create issue failed, status: ${res.status}`);
+    }
+  }
+
+}

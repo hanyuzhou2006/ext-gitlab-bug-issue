@@ -1,0 +1,21 @@
+{
+  "name": "Gitlab bug issue report",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "description": "A chromium extension to report bug issue to Gitlab",
+  "icons": {
+    "32": "icons/gitlab.png"
+  },
+  "action": {
+    "default_popup": "html/popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "js/background.js"
+  }
+  
+}
