@@ -34,7 +34,7 @@ export function createIssueMarkDown(userAgent, orginUrl, steps, screenshot, actu
   ${actual}
   ## 期望结果
   ${expected}
-  /label ~bug
+  
   `;
 
 }

@@ -37,7 +37,8 @@ export async function newIssue(projectAddress: string, privateToken: string, tit
     },
     body: JSON.stringify({
       title,
-      description
+      description,
+      labels: "bug"
     })
   })
   if (res.status >= 200 && res.status < 400) {
