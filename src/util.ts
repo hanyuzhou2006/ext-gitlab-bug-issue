@@ -166,3 +166,82 @@ export function translateProjectUrl(projectUrl: string) {
   return `${url.origin}/api/v4/projects/${encodeURIComponent(projectName)}`;
 }
 
+export type Rule = {
+  url: string,
+  profile: string
+}
+
+/**
+ * 
+ * @param rulesString 
+ */
+export function transRules(rulesString: string): Rule[] {
+  const rules = rulesString.split('\n');
+  return rules.map(rule => {
+    // split by ',' or empty space
+    const ruleAttr = rule.split(/[,\s]+/);
+    return {
+      url: ruleAttr[0],
+      profile: ruleAttr[1]
+    }
+  }).filter(rule => rule.url && rule.profile);
+
+}
+
+export function saveRulesString(ruleString: string) {
+  chrome.storage.local.set({ 'rules': ruleString });
+}
+
+export async function getRulesString(): Promise<string> {
+  const rules = await chrome.storage.local.get('rules');
+  if (rules.rules) {
+    return rules.rules;
+  }
+  return '';
+}
+
+export async function getRules(): Promise<Rule[]> {
+  const rulesString = await getRulesString();
+  return transRules(rulesString);
+}
+
+/**
+ * 智能匹配规则
+ * 模糊匹配 url
+ * @param url
+ */
+export async function matchRules(url: string): Promise<Rule | null> {
+  const rules = await getRules();
+  const matchedRule = rules.find(rule => {
+    return url.indexOf(rule.url) > -1;
+  });
+  return matchedRule;
+}
+
+/**
+ * get Project Profile by key
+ * 
+ */
+export async function getProjectProfile(key: string): Promise<ProjectProfile | null> {
+  const projectsProfile = await getProjectsProfile();
+  if (projectsProfile[key]) {
+    const profile = projectsProfile[key];
+    return {
+      profileName: key,
+      projectAddress: profile.projectAddress,
+      privateToken: profile.privateToken,
+    }
+  }
+  return null;
+}
+
+/**
+ * 根据 url 获取 profile
+ */
+export async function getProfileByUrl(url: string): Promise<ProjectProfile | null> {
+  const rule = await matchRules(url);
+  if (rule) {
+    return await getProjectProfile(rule.profile);
+  }
+  return null;
+}

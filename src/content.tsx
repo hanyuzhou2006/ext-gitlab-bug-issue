@@ -1,6 +1,5 @@
-import React, { useEffect, useState, MutableRefObject, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
-import ReactImgEditor from '@cloudogu/react-img-editor'
 import '@cloudogu/react-img-editor/lib/index.css'
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Stack, IStackTokens, IStackStyles } from '@fluentui/react/lib/Stack';
@@ -8,27 +7,8 @@ import { PrimaryButton } from '@fluentui/react/lib/Button';
 import { getUserAgent, createIssueMarkDown, getSelectedProfile } from "./util";
 import { newIssue, uploadImage } from "./apis";
 import useNodeSize from "./useNodeSize";
-
-const createScreenshot = (stageRef: MutableRefObject<any>): { toBlob: () => Promise<Blob | null> } => ({
-  toBlob: () => {
-    const canvas = stageRef.current.clearAndToCanvas({
-      pixelRatio: stageRef.current._pixelRatio,
-    }) as HTMLCanvasElement;
-    return new Promise<Blob | null>((resolve) => {
-      canvas.toBlob((blob) => resolve(blob));
-    });
-  },
-});
-
-function Editor({ width, height, stageRef, url }) {
-  const setStage = (stage: unknown) => {
-    stageRef.current = stage;
-  };
-  return <ReactImgEditor width={width} height={height} getStage={setStage} src={url} />
-}
-
-
-
+import { createScreenshot, Editor } from "./content-screenshot-editor";
+import { getProfileByUrl } from "./util";
 
 const editorStyles: IStackStyles = {
   root: {
@@ -83,6 +63,7 @@ function Content() {
 
   // get selected projectAddress and privateToken
   useEffect(() => {
+
     getSelectedProfile().then((profile) => {
       console.log(`profile: ${JSON.stringify(profile)}`);
       if (profile) {
@@ -91,6 +72,18 @@ function Content() {
       }
     })
   }, []);
+
+  // 智能匹配规则
+  // 设置 profile
+  useEffect(() => {
+    getProfileByUrl(url).then((profile) => {
+      if (profile) {
+        setProjectAddress(profile.projectAddress);
+        setPrivateToken(profile.privateToken);
+      }
+    })
+  }, [url]);
+
 
   function isValueValid() {
     return title && actual && expected && steps && url && screenshotUrl;
@@ -110,17 +103,6 @@ function Content() {
       alert(e.message);
     }
 
-  }
-  function print() {
-    console.log(`url: ${url}`);
-    console.log(`screenshotUrl: ${screenshotUrl}`);
-    console.log(`projectAddress: ${projectAddress}`);
-    console.log(`privateToken: ${privateToken}`);
-    console.log(`title: ${title}`);
-    console.log(`userAgent: ${userAgent}`);
-    console.log(`steps: ${steps}`);
-    console.log(`actual: ${actual}`);
-    console.log(`expected: ${expected}`);
   }
 
 
