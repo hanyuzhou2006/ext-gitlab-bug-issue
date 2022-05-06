@@ -11,6 +11,7 @@
   "devDependencies": {
     "@cloudogu/react-img-editor": "^0.4.0",
     "@fluentui/react": "^8.67.1",
+    "@fluentui/react-hooks": "^8.5.4",
     "@types/chrome": "^0.0.183",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
