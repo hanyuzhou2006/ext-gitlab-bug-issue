@@ -16,7 +16,7 @@ const navLinks = [
     links: [
       {
         name: "Profile",
-        url: "#/profile",
+        url: "#/",
         key: "profile",
       },
       {
