@@ -50,15 +50,18 @@ function Popup() {
       minWidth: '300px',
     }
   }}>
-    <ChoiceGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个规则" />
-    <PrimaryButton onClick={async () => {
-      await newIssue();
-    }}>创建 Issue</PrimaryButton>
-
-    <DefaultButton onClick={async () => {
-      await setting();
-    }}>设置规则</DefaultButton>
-
+    <Stack>
+      <ChoiceGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个规则" />
+      <DefaultButton>添加条件</DefaultButton>
+    </Stack>
+    <Stack horizontal horizontalAlign="space-between">
+      <PrimaryButton onClick={async () => {
+        await newIssue();
+      }}>创建 Issue</PrimaryButton>
+      <DefaultButton onClick={async () => {
+        await setting();
+      }}>设置规则</DefaultButton>
+    </Stack>
   </Stack>
   );
 }
