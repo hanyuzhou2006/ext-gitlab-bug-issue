@@ -18,15 +18,21 @@ async function setting() {
   chrome.runtime.sendMessage({ type: 'setting' });
 }
 
+async function getOptions() {
+  const profiles = await getProfiles();
+  const profileOptions = profiles.map(profile => {
+    return {
+      key: profile.profileName,
+      text: profile.profileName
+    }
+  });
+  return profileOptions.concat({ key: 'auto', text: 'auto' });
+}
 function Popup() {
   const [options, setOptions] = React.useState<IDropdownOption[]>([]);
   const [selectedKey, setSelectedKey] = React.useState('');
   useEffect(() => {
-    getProfiles().then((profiles) => {
-      setOptions(profiles.map((profile) => {
-        return { key: profile.profileName, text: profile.profileName };
-      }));
-    });
+    getOptions().then(setOptions);
   }, [])
   useEffect(() => {
     getSelectedProfileName().then((profileName) => {

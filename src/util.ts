@@ -54,8 +54,12 @@ export type ProjectsProfile = {
 
 /**
  * new a gitlab project profile
+ * if profileName is `auto`, throw error
  */
 export async function newProjectProfile(profile: ProjectProfile) {
+  if (profile.profileName === 'auto') {
+    throw new Error('auto profile name is not allowed');
+  }
   const profiles = await getProjectsProfile();
   profiles[profile.profileName] = {
     projectAddress: profile.projectAddress,
@@ -132,18 +136,12 @@ export async function getSelectedProfileName(): Promise<string> {
 /**
  * get selected profile
  */
-export async function getSelectedProfile(): Promise<ProjectProfile | null> {
+export async function getSelectedProfile(url: string): Promise<ProjectProfile | null> {
   const selectedProfileName = await getSelectedProfileName();
-  const projectsProfile = await getProjectsProfile();
-  if (selectedProfileName && projectsProfile[selectedProfileName]) {
-    const profile = projectsProfile[selectedProfileName];
-    return {
-      profileName: selectedProfileName,
-      projectAddress: profile.projectAddress,
-      privateToken: profile.privateToken,
-    }
+  if (selectedProfileName === 'auto') {
+    return getProfileByUrl(url);
   }
-  return null;
+  return await getProjectProfile(selectedProfileName);
 }
 
 
@@ -245,3 +243,4 @@ export async function getProfileByUrl(url: string): Promise<ProjectProfile | nul
   }
   return null;
 }
+

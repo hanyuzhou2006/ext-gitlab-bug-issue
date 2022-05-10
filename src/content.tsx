@@ -63,25 +63,14 @@ function Content() {
 
   // get selected projectAddress and privateToken
   useEffect(() => {
-
-    getSelectedProfile().then((profile) => {
-      console.log(`profile: ${JSON.stringify(profile)}`);
-      if (profile) {
-        setProjectAddress(profile.projectAddress);
-        setPrivateToken(profile.privateToken);
-      }
-    })
-  }, []);
-
-  // 智能匹配规则
-  // 设置 profile
-  useEffect(() => {
-    getProfileByUrl(url).then((profile) => {
-      if (profile) {
-        setProjectAddress(profile.projectAddress);
-        setPrivateToken(profile.privateToken);
-      }
-    })
+    if (url) {
+      getSelectedProfile(url).then((profile) => {
+        if (profile) {
+          setProjectAddress(profile.projectAddress);
+          setPrivateToken(profile.privateToken);
+        }
+      })
+    }
   }, [url]);
 
 

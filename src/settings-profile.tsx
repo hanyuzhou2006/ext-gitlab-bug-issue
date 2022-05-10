@@ -110,11 +110,16 @@ export function SettingsProfile() {
           }}>
             <DefaultButton onClick={closeModal}>Cancel</DefaultButton>
             <PrimaryButton onClick={async () => {
-              await newProjectProfile({
-                profileName,
-                projectAddress,
-                privateToken
-              })
+              try {
+                await newProjectProfile({
+                  profileName,
+                  projectAddress,
+                  privateToken
+                })
+              } catch (err) {
+                alert(err.message)
+              }
+
               closeModal();
               setUpdated(Date.now());
             }}>New</PrimaryButton>
