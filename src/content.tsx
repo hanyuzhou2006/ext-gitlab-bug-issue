@@ -90,7 +90,6 @@ function Content() {
   }
 
   async function submit() {
-    print();
     setChecked(true);
     if (!isValueValid()) return;
     try {
