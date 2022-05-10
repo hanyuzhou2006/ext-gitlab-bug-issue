@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Stack, IStackTokens } from '@fluentui/react';
 import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
-import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 import { getProfiles, getSelectedProfileName, setSelectedProfileName } from "./util";
 
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 initializeIcons(/* optional base url */);
 
-const stackTokens: IStackTokens = { childrenGap: 40 };
+const stackTokens: IStackTokens = { childrenGap: 20 };
 
 async function newIssue() {
   await chrome.runtime.sendMessage({ type: 'newIssue' });
@@ -26,10 +26,12 @@ async function getOptions() {
       text: profile.profileName
     }
   });
-  return profileOptions.concat({ key: 'auto', text: 'auto' });
+  return [{ key: '', text: '不使用任何规则' }]
+    .concat(profileOptions)
+    .concat({ key: 'auto', text: '自动匹配' });
 }
 function Popup() {
-  const [options, setOptions] = React.useState<IDropdownOption[]>([]);
+  const [options, setOptions] = React.useState<IChoiceGroupOption[]>([]);
   const [selectedKey, setSelectedKey] = React.useState('');
   useEffect(() => {
     getOptions().then(setOptions);
@@ -39,24 +41,23 @@ function Popup() {
       setSelectedKey(profileName);
     });
   }, []);
-  return (<Stack tokens={stackTokens}>
-    <Dropdown
-      placeholder="Select an profile"
-      options={options}
-      selectedKey={selectedKey}
-      onChange={(e, option) => {
-        setSelectedKey(option.key as string);
-        setSelectedProfileName(option.key as string);
-      }
-      }
-    />
+  function onChangeKey(_e, option: IChoiceGroupOption) {
+    setSelectedKey(option.key as string);
+    setSelectedProfileName(option.key as string);
+  }
+  return (<Stack tokens={stackTokens} styles={{
+    root: {
+      minWidth: '300px',
+    }
+  }}>
+    <ChoiceGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个规则" />
     <PrimaryButton onClick={async () => {
       await newIssue();
-    }}>NewBugIssue</PrimaryButton>
+    }}>创建 Issue</PrimaryButton>
 
     <DefaultButton onClick={async () => {
       await setting();
-    }}>Settings</DefaultButton>
+    }}>设置规则</DefaultButton>
 
   </Stack>
   );
