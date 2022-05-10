@@ -8,8 +8,7 @@ export function getUserAgent() {
  * ## 前提条件
  * 1. 浏览器环境 {userAgent}
  * 1. 测试地址 {orginUrl}
- * ## 测试时间
- * {now}
+ * 1. 测试时间 {now}
  * ## 重现步骤
  * {steps}
  * ## 相关截图
@@ -34,7 +33,7 @@ export function createIssueMarkDown(userAgent, orginUrl, steps, screenshot, actu
   ${actual}
   ## 期望结果
   ${expected}
-  
+
   `;
 
 }
