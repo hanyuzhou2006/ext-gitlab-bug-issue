@@ -28,7 +28,7 @@ async function getOptions() {
   });
   return [{ key: '', text: '不使用任何规则' }]
     .concat(profileOptions)
-    .concat({ key: 'auto', text: '自动匹配' });
+    .concat({ key: 'auto', text: '智能匹配' });
 }
 function Popup() {
   const [options, setOptions] = React.useState<IChoiceGroupOption[]>([]);
