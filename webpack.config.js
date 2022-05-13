@@ -1,6 +1,5 @@
 const path = require('path');
 module.exports = {
-  mode: 'production',
   devtool: false,
   entry: {
     background: './src/background.tsx',

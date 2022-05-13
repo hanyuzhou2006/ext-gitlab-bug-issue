@@ -4,6 +4,8 @@
   "description": "A chromium extension to report bug issue to Gitlab",
   "main": "js/background.js",
   "scripts": {
+    "dev": "webpack --mode=development --watch",
+    "build": "webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hanyuzhou2006@163.com",
