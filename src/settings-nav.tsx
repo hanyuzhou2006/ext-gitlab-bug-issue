@@ -15,13 +15,13 @@ const navStyles: Partial<INavStyles> = {
 
 const navProfile = {
   key: 'profile',
-  name: 'Profile',
+  name: '配置',
   to: '/profile',
   url: '#/profile',
 }
 const navMatch = {
   key: 'match',
-  name: 'Match',
+  name: '智能匹配',
   to: '/match',
   url: '#/match',
 }

@@ -21,7 +21,7 @@ export function SettingsProfile() {
   function buildColumns(): IColumn[] {
     return [{
       key: 'profileName',
-      name: 'Profile Name',
+      name: '配置名称',
       fieldName: 'profileName',
       minWidth: 100,
       maxWidth: 300,
@@ -30,7 +30,7 @@ export function SettingsProfile() {
       }
     }, {
       key: 'projectAddress',
-      name: 'Project Address',
+      name: '项目地址',
       fieldName: 'projectAddress',
       minWidth: 100,
       onRender: (item: ProjectProfile) => {
@@ -46,7 +46,7 @@ export function SettingsProfile() {
       }
     }, {
       key: 'actions',
-      name: 'Actions',
+      name: '操作',
       minWidth: 100,
       onRender: (item: ProjectProfile) => {
         return <Actions item={item} setEditItem={setEditItem} setUpdated={setUpdated} openEditProfileModal={openEditProfileModal} />
@@ -63,7 +63,7 @@ export function SettingsProfile() {
         root: {
           width: '200px',
         }
-      }} onClick={() => openNewProfileModal()}>New Profile</PrimaryButton>
+      }} onClick={() => openNewProfileModal()}>新建配置</PrimaryButton>
       <DetailsList selectionMode={SelectionMode.none} disableSelectionZone items={profiles} columns={columns} />
     </>
   );

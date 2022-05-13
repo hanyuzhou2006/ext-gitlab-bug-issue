@@ -26,7 +26,7 @@ async function getOptions() {
       text: profile.profileName
     }
   });
-  return [{ key: '', text: '不使用任何规则' }]
+  return [{ key: '', text: '不使用任何配置' }]
     .concat(profileOptions)
     .concat({ key: 'auto', text: '智能匹配' });
 }
@@ -51,8 +51,12 @@ function Popup() {
     }
   }}>
     <Stack>
-      <ChoiceGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个规则" />
-      <DefaultButton>添加条件</DefaultButton>
+      <ChoiceGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个配置" />
+      {
+        selectedKey === 'auto' ? <DefaultButton>添加条件</DefaultButton> : <></>
+
+      }
+
     </Stack>
     <Stack horizontal horizontalAlign="space-between">
       <PrimaryButton onClick={async () => {
@@ -60,7 +64,7 @@ function Popup() {
       }}>创建 Issue</PrimaryButton>
       <DefaultButton onClick={async () => {
         await setting();
-      }}>设置规则</DefaultButton>
+      }}>设置配置</DefaultButton>
     </Stack>
   </Stack>
   );
