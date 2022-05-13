@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getProfiles, ProjectProfile } from './util'
 import { DetailsList, IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
 import { useBoolean } from '@fluentui/react-hooks';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
-import { NewProfileModal } from './settings-profile-modal';
+import { EditProfileMoal, NewProfileModal } from './settings-profile-modal';
 import { Actions } from './settings-profile-actions';
 initializeIcons(/* optional base url */);
 
 export function SettingsProfile() {
-  const [profiles, setProfiles] = React.useState([]);
-  const [updated, setUpdated] = React.useState(Date.now());
+  const [profiles, setProfiles] = useState([]);
+  const [updated, setUpdated] = useState(Date.now());
   const [isNewProfileModalOpened, { setTrue: openNewProfileModal, setFalse: closeNewProfileModal }] = useBoolean(false);
-
+  const [editItem, setEditItem] = useState({} as ProjectProfile);
+  const [isEditProfileModalOpened, { setTrue: openEditProfileModal, setFalse: closeEditProfileModal }] = useBoolean(false);
   useEffect(() => {
     getProfiles().then(setProfiles);
   }, [updated])
@@ -48,7 +49,7 @@ export function SettingsProfile() {
       name: 'Actions',
       minWidth: 100,
       onRender: (item: ProjectProfile) => {
-        return <Actions item={item} setUpdated={setUpdated} />
+        return <Actions item={item} setEditItem={setEditItem} setUpdated={setUpdated} openEditProfileModal={openEditProfileModal} />
       }
     }]
   }
@@ -57,6 +58,7 @@ export function SettingsProfile() {
   return (
     <>
       <NewProfileModal closeModal={closeNewProfileModal} setUpdated={setUpdated} isModalOpened={isNewProfileModalOpened} />
+      <EditProfileMoal item={editItem} closeModal={closeEditProfileModal} setUpdated={setUpdated} isModalOpened={isEditProfileModalOpened} />
       <PrimaryButton styles={{
         root: {
           width: '200px',
