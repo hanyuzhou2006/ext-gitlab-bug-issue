@@ -1,3 +1,17 @@
+## Requirements
+
++ nodejs 18
+
+## Dev
+
++ npm i --force
++ npm run dev
++ the `prod` folder is the extension 
+
+## Production
+
++ npm run build
++ the `prod` folder is the extension 
 
 ## Gitlab Private Token
 
