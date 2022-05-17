@@ -1,24 +1,42 @@
 
-import React, { useState } from 'react';
-import { TextField, Stack, DetailsList, IColumn, SelectionMode, DefaultButton, IDragDropContext, IDragDropEvents } from '@fluentui/react';
+import React, { useEffect, useState } from 'react';
+import { TextField, Stack, DetailsList, IColumn, SelectionMode, DefaultButton, IDragDropContext, IDragDropEvents, Dropdown, IDropdownOption } from '@fluentui/react';
 import { Actions } from './settings-match-actions';
-import { Rule } from './util';
+import { ProjectProfile, Rule } from './util';
 import { getTheme, mergeStyles } from '@fluentui/react/lib/Styling';
 import { IconButton } from '@fluentui/react';
+import { getProfiles } from './util';
 
 const theme = getTheme();
 const dragEnterClass = mergeStyles({
   backgroundColor: theme.palette.neutralLight,
 });
 
-export function UIEditorMode(props:{rules:Rule[],setRules:(rules:Rule[])=>void}){
-  const {rules,setRules} = props;
+function ProfileSelection(props: { profile: string, setProfile: (profile: string) => void }) {
+  const { profile, setProfile } = props;
+  const [profiles, setProfiles] = useState<ProjectProfile[]>([]);
+  useEffect(() => {
+    getProfiles().then(setProfiles);
+  }, [])
+  const options: IDropdownOption<{ key: string, text: string }>[] = profiles.map(profile => ({
+    key: profile.profileName,
+    text: profile.profileName
+  }))
+  return <Dropdown placeholder="选择一项配置" options={options} selectedKey={profile}
+    onChange={(_e, option: IDropdownOption<{ key: string, text: string }>) => {
+      setProfile(option.key as string);
+    }} />
+}
+
+
+export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) => void }) {
+  const { rules, setRules } = props;
   function onDel(index: number) {
     const newRules = rules.filter((_, i) => i !== index);
     setRules(newRules);
   }
 
-  function onUrlChange(index:number, value:string) {
+  function onUrlChange(index: number, value: string) {
     const rule = { ...rules[index] };
     rule.url = value;
     const newRules = [
@@ -28,7 +46,7 @@ export function UIEditorMode(props:{rules:Rule[],setRules:(rules:Rule[])=>void})
     setRules(newRules);
   }
 
-  function onProfileChange(index:number, value:string) {
+  function onProfileChange(index: number, value: string) {
     const rule = { ...rules[index] };
     rule.profile = value;
     const newRules = [
@@ -49,7 +67,7 @@ export function UIEditorMode(props:{rules:Rule[],setRules:(rules:Rule[])=>void})
           {
             iconName: 'Sort',
           }
-        }/>
+        } />
       }
     },
     {
@@ -69,8 +87,8 @@ export function UIEditorMode(props:{rules:Rule[],setRules:(rules:Rule[])=>void})
       minWidth: 200,
       fieldName: 'profile',
       onRender: (item, index) => {
-        return <TextField value={item.profile} onChange={(_e, value) => {
-          onProfileChange(index, value);
+        return <ProfileSelection profile={item.profile} setProfile={(profile) => {
+          onProfileChange(index, profile);
         }} />
       }
     },
