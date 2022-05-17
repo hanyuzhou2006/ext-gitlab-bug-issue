@@ -202,6 +202,10 @@ export async function getRules(): Promise<Rule[]> {
   return transRules(rulesString);
 }
 
+export function serializeRules(rules:Rule[]){
+  return rules.map(rule => `${rule.url} ${rule.profile}`).join('\n');
+}
+
 /**
  * 智能匹配规则
  * 模糊匹配 url
