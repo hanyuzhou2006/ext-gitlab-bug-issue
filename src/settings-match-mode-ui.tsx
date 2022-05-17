@@ -63,11 +63,24 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
       minWidth: 60,
       maxWidth: 100,
       onRender: (item) => {
-        return <IconButton iconProps={
+        return <IconButton styles={{
+          rootHovered: {
+            cursor: 'move',
+          }
+        }} iconProps={
           {
             iconName: 'Sort',
+            
           }
-        } />
+        } onMouseEnter={
+          () => {
+            setCanDrag(true)
+          }
+        } onMouseLeave={
+          () => {
+            setCanDrag(false)
+          }
+        }/>
       }
     },
     {
@@ -106,6 +119,8 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
     const newRules = [...rules, { url: '', profile: '' }]
     setRules(newRules);
   }
+  const [canDrag,setCanDrag] = useState(false);
+  
 
   const [dragItem, setDragItem] = useState<Rule | undefined>();
 
@@ -115,14 +130,15 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
     items.splice(insertIndex, 0, dragItem);
     setRules(items);
   }
-
+  
   function dragDropEvents(): IDragDropEvents {
     return {
       canDrop: (dropContext?: IDragDropContext, dragContext?: IDragDropContext) => {
         return true;
       },
       canDrag: (item?: any) => {
-        return true;
+        
+        return canDrag;
       },
       onDragEnter: (item?: any, event?: DragEvent) => {
         // return string is the css classes that will be added to the entering element.
