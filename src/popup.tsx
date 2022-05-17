@@ -15,7 +15,11 @@ async function newIssue() {
 }
 
 async function setting() {
-  chrome.runtime.sendMessage({ type: 'setting' });
+  await chrome.runtime.sendMessage({ type: 'setting' });
+}
+
+async function match() {
+  await chrome.runtime.sendMessage({ type: 'match' });
 }
 
 async function getOptions() {
@@ -53,7 +57,9 @@ function Popup() {
     <Stack>
       <ChoiceGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个配置" />
       {
-        selectedKey === 'auto' ? <DefaultButton>添加条件</DefaultButton> : <></>
+        selectedKey === 'auto' ? <DefaultButton onClick={async () => {
+          await match();
+        }}>添加条件</DefaultButton> : <></>
 
       }
 

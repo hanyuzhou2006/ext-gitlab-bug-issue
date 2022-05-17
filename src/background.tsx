@@ -28,6 +28,11 @@ async function setting() {
   await chrome.tabs.create({ url });
 }
 
+async function match(){
+  const url = chrome.runtime.getURL("/html/settings.html#/match");
+  await chrome.tabs.create({ url });
+}
+
 chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
   if (msg.type === 'newIssue') {
     sendResponse({ success: true });
@@ -35,5 +40,8 @@ chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
   } else if (msg.type === 'setting') {
     sendResponse({ success: true });
     await setting();
+  } else if (msg.type === 'match') {
+    sendResponse({ success: true });
+    await match();
   }
 })
