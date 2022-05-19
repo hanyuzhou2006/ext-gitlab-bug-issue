@@ -1,3 +1,4 @@
+import { LabelProp } from "./gitlab-label";
 
 export function getUserAgent() {
   return navigator.userAgent;
@@ -42,12 +43,14 @@ export type ProjectProfile = {
   profileName: string,
   projectAddress: string,
   privateToken: string,
+  labels?: LabelProp[],
 }
 
 export type ProjectsProfile = {
   [profileName: string]: {
     projectAddress: string,
     privateToken: string,
+    labels?: LabelProp[],
   }
 }
 
@@ -63,6 +66,7 @@ export async function newProjectProfile(profile: ProjectProfile) {
   profiles[profile.profileName] = {
     projectAddress: profile.projectAddress,
     privateToken: profile.privateToken,
+    labels: profile.labels || [],
   }
   await setProjectsProfile(profiles);
 }
@@ -81,12 +85,33 @@ export async function delProjectProfile(profileName: string) {
   }
 }
 
+function serializeProfiles(profiles: ProjectsProfile) {
+  return JSON.stringify(profiles);
+}
+
+function deserializeProfiles(json: string) {
+  // convert labels to array if it is not array
+  const profile = JSON.parse(json, (key, value) => {
+    if (key === 'labels') {
+      if (Array.isArray(value)) {
+        // remove null or undefined
+        return value.filter(item => item);
+      } else {
+        return value.split(',').map(label => ({
+          name: label,
+        }));
+      }
+    }
+    return value;
+  });
+  return profile;
+}
 
 /**
  * set gitlab projects profile
  */
 export async function setProjectsProfile(profiles: ProjectsProfile) {
-  await chrome.storage.local.set({ 'projectsProfile': JSON.stringify(profiles) });
+  await chrome.storage.local.set({ 'projectsProfile': serializeProfiles(profiles) });
 }
 
 /**
@@ -95,7 +120,7 @@ export async function setProjectsProfile(profiles: ProjectsProfile) {
 export async function getProjectsProfile(): Promise<ProjectsProfile> {
   const profiles = await chrome.storage.local.get('projectsProfile');
   if (profiles.projectsProfile) {
-    return JSON.parse(profiles.projectsProfile);
+    return deserializeProfiles(profiles.projectsProfile);
   }
   return {};
 }
@@ -109,6 +134,7 @@ export async function getProfiles(): Promise<ProjectProfile[]> {
       profileName: key,
       projectAddress: profile.projectAddress,
       privateToken: profile.privateToken,
+      labels: profile.labels || [],
     }
   })
 }
@@ -202,7 +228,7 @@ export async function getRules(): Promise<Rule[]> {
   return transRules(rulesString);
 }
 
-export function serializeRules(rules:Rule[]){
+export function serializeRules(rules: Rule[]) {
   return rules.map(rule => `${rule.url} ${rule.profile}`).join('\n');
 }
 

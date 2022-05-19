@@ -55,3 +55,37 @@ export async function newIssue(projectAddress: string, privateToken: string, tit
   }
 
 }
+
+
+export async function listLabels(projectAddress: string, privateToken: string) {
+  const projectApiUrl = translateProjectUrl(projectAddress);
+  const res = await fetch(`${projectApiUrl}/labels?per_page=100`, {
+    method: 'GET',
+    headers: {
+      'PRIVATE-TOKEN': privateToken
+    }
+  })
+  if (res.status >= 200 && res.status < 400) {
+    const data = await res.json();
+    const initalData =  data.map(item => ({
+      name: item.name,
+      color: item.color,
+      textColor: item.text_color,
+    }));
+    // 去重
+    const uniqueData = initalData.filter((item, index, self) =>
+      index === self.findIndex(t => (
+        t.name === item.name 
+      ))
+    );
+    return uniqueData;
+  } else {
+    try {
+      const data = await res.json();
+      console.log(data);
+      throw new Error(JSON.stringify(data.message));
+    } catch (_e) {
+      throw new Error(`list labels failed, status: ${res.status}`);
+    }
+  }
+}

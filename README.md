@@ -21,4 +21,6 @@
 
 ## Gitlab Restful API
 1. [New issue](https://docs.gitlab.com/ee/api/issues.html#new-issue)
-1. [Upload a file](https://docs.gitlab.com/ee/api/projects.html#upload-a-file)  
+1. [Upload a file](https://docs.gitlab.com/ee/api/projects.html#upload-a-file)
+1. [List labels](https://docs.gitlab.com/ee/api/labels.html#list-labels)
+  
