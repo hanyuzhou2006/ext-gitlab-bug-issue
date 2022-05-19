@@ -6,7 +6,8 @@ import { useBoolean } from '@fluentui/react-hooks';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { EditLabelsModal, EditProfileMoal, NewProfileModal } from './settings-profile-modal';
 import { Actions } from './settings-profile-actions';
-import { GitlabLabel } from './gitlab-label';
+import { GitlabLabel, GitlabLabels } from './gitlab-label';
+import { Stack } from '@fluentui/react';
 initializeIcons(/* optional base url */);
 
 export function SettingsProfile() {
@@ -54,8 +55,11 @@ export function SettingsProfile() {
       isMultiline: true,
       onRender: (item: ProjectProfile) => {
         const labels = item.labels;
-        return labels && labels.length > 0 ? labels.map(label =>
-          <GitlabLabel key={label.name} name={label.name} color={label.color} textColor={label.textColor} />) : null;
+        if (labels && labels.length > 0) {
+          return <GitlabLabels labels={labels} />
+        }
+
+        return null;
       }
     }, {
       key: 'actions',

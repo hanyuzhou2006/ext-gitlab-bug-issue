@@ -1,3 +1,4 @@
+import { Stack } from '@fluentui/react';
 import React from 'react';
 
 export type LabelProp = {
@@ -73,3 +74,19 @@ function GitlabScopedLabel(props) {
   </span>
 }
 
+export function GitlabLabels(props: {
+  labels: LabelProp[];
+}): JSX.Element {
+  const { labels } = props;
+  return <Stack style={{
+    display: 'block',
+  }} tokens={{
+    childrenGap: 2
+  }}>
+    {
+      labels.map(label => {
+        return <GitlabLabel key={label.name} name={label.name} color={label.color} textColor={label.textColor} />
+      })
+    }
+  </Stack>;
+}

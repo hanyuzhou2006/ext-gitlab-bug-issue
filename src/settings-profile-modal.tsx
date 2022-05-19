@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Modal, Stack, TextField, IStackTokens, DefaultButton, PrimaryButton, Dropdown, IDropdownOption } from '@fluentui/react';
 import { newProjectProfile } from './util';
 import { listLabels } from './apis';
-import { GitlabLabel, LabelProp } from './gitlab-label';
+import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
 
 const stackTokens: IStackTokens = { childrenGap: 20, padding: 20 };
 
@@ -152,12 +152,10 @@ export function EditLabelsModal(props) {
   }
 
   function onRenderTitle(options: IDropdownOption[]) {
-    return <>
-      {options.map(option => {
-        const label = option.data as LabelProp;
-        return <GitlabLabel key={label.name} name={label.name} color={label.color} textColor={label.textColor} />
-      })}
-    </>;
+    const labels = options.map(option => {
+      return option.data;
+    });
+    return <GitlabLabels labels={labels} />;
   }
 
   return <Modal isOpen={isModalOpened} onDismiss={closeModal} isBlocking={false}>
