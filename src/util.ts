@@ -257,6 +257,7 @@ export async function getProjectProfile(key: string): Promise<ProjectProfile | n
       profileName: key,
       projectAddress: profile.projectAddress,
       privateToken: profile.privateToken,
+      labels: profile.labels
     }
   }
   return null;

@@ -1,3 +1,4 @@
+import { LabelProp } from "./gitlab-label";
 import { translateProjectUrl } from "./util";
 export async function uploadImage(projectAddress: string, privateToken: string, file: Blob) {
   const projectApiUrl = translateProjectUrl(projectAddress);
@@ -26,9 +27,12 @@ export async function uploadImage(projectAddress: string, privateToken: string, 
 
 }
 
-export async function newIssue(projectAddress: string, privateToken: string, title: string, markdown: string) {
+export async function newIssue(projectAddress: string, privateToken: string, title: string, markdown: string,
+  labels: LabelProp[]) {
   const description = markdown;
   const projectApiUrl = translateProjectUrl(projectAddress);
+  const issueLabels = labels.map(label=>label.name).join(",");
+
   const res = await fetch(`${projectApiUrl}/issues`, {
     method: 'POST',
     headers: {
@@ -38,7 +42,7 @@ export async function newIssue(projectAddress: string, privateToken: string, tit
     body: JSON.stringify({
       title,
       description,
-      labels: "bug"
+      labels: issueLabels
     })
   })
   if (res.status >= 200 && res.status < 400) {
@@ -67,7 +71,7 @@ export async function listLabels(projectAddress: string, privateToken: string) {
   })
   if (res.status >= 200 && res.status < 400) {
     const data = await res.json();
-    const initalData =  data.map(item => ({
+    const initalData = data.map(item => ({
       name: item.name,
       color: item.color,
       textColor: item.text_color,
@@ -75,7 +79,7 @@ export async function listLabels(projectAddress: string, privateToken: string) {
     // 去重
     const uniqueData = initalData.filter((item, index, self) =>
       index === self.findIndex(t => (
-        t.name === item.name 
+        t.name === item.name
       ))
     );
     return uniqueData;

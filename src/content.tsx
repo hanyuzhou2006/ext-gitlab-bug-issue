@@ -8,7 +8,11 @@ import { getUserAgent, createIssueMarkDown, getSelectedProfile } from "./util";
 import { newIssue, uploadImage } from "./apis";
 import useNodeSize from "./useNodeSize";
 import { createScreenshot, Editor } from "./content-screenshot-editor";
-import { getProfileByUrl } from "./util";
+import { LabelProp } from "./gitlab-label";
+import { initializeIcons } from '@fluentui/react/lib/Icons';
+import { Labels } from "./content-labels";
+
+initializeIcons(/* optional base url */);
 
 const editorStyles: IStackStyles = {
   root: {
@@ -42,6 +46,8 @@ function Content() {
   const [url, setUrl] = useState('');
   const [steps, setSteps] = useState('');
   const [checked, setChecked] = useState(false);
+  const [optionalLabels, setOptionalLabels] = useState<LabelProp[]>([]);
+  const [labels, setLabels] = useState<LabelProp[]>([]);
 
   const { ref, width, height } = useNodeSize();
 
@@ -62,12 +68,14 @@ function Content() {
   }, []);
 
   // get selected projectAddress and privateToken
+  // and optional labels
   useEffect(() => {
     if (url) {
       getSelectedProfile(url).then((profile) => {
         if (profile) {
           setProjectAddress(profile.projectAddress);
           setPrivateToken(profile.privateToken);
+          setOptionalLabels(profile.labels);
         }
       })
     }
@@ -85,14 +93,13 @@ function Content() {
       const file = await screenshot.toBlob();
       const image = await uploadImage(projectAddress, privateToken, file);
       const markdown = createIssueMarkDown(userAgent, url, steps, image, actual, expected);
-      const issue = await newIssue(projectAddress, privateToken, title, markdown);
+      const issue = await newIssue(projectAddress, privateToken, title, markdown, labels);
       location.href = issue.web_url;
     } catch (e) {
       alert(e.message);
     }
 
   }
-
 
   return (
     <Stack horizontal tokens={editorTokens} styles={{
@@ -132,6 +139,10 @@ function Content() {
         <TextField label="预期结果" multiline value={expected} required onChange={(e, value) => {
           setExpected(value);
         }} errorMessage={checkExpectedMessage()} />
+
+        <Labels labels={optionalLabels} onChange={(_e, labels) => {
+          setLabels(labels);
+        }} />
         <PrimaryButton onClick={submit}>提交</PrimaryButton>
       </Stack>
 
@@ -163,5 +174,6 @@ function Content() {
     return checked && !privateToken && '请输入 private_token';
   }
 }
+
 
 ReactDOM.render(<Content />, document.getElementById('content'));
