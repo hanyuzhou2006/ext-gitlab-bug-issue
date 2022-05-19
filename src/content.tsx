@@ -47,7 +47,7 @@ function Content() {
   const [steps, setSteps] = useState('');
   const [checked, setChecked] = useState(false);
   const [optionalLabels, setOptionalLabels] = useState<LabelProp[]>([]);
-  const [labels, setLabels] = useState<LabelProp[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
 
   const { ref, width, height } = useNodeSize();
 

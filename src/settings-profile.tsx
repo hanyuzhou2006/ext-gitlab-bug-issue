@@ -7,7 +7,7 @@ import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { EditLabelsModal, EditProfileMoal, NewProfileModal } from './settings-profile-modal';
 import { Actions } from './settings-profile-actions';
 import { GitlabLabel, GitlabLabels } from './gitlab-label';
-import { Stack } from '@fluentui/react';
+import { MessageBar, Stack } from '@fluentui/react';
 initializeIcons(/* optional base url */);
 
 export function SettingsProfile() {
@@ -84,6 +84,9 @@ export function SettingsProfile() {
         }
       }} onClick={() => openNewProfileModal()}>新建配置</PrimaryButton>
       <DetailsList selectionMode={SelectionMode.none} disableSelectionZone items={profiles} columns={columns} />
+      <MessageBar>
+        注意：预置标签将会直接添加到 issue 中，预置 Scoped Label 将要求在创建 issue 时进行选择。
+      </MessageBar>
     </>
   );
 

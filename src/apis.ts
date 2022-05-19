@@ -28,11 +28,11 @@ export async function uploadImage(projectAddress: string, privateToken: string, 
 }
 
 export async function newIssue(projectAddress: string, privateToken: string, title: string, markdown: string,
-  labels: LabelProp[]) {
+  labels: string[]) {
   const description = markdown;
   const projectApiUrl = translateProjectUrl(projectAddress);
   
-  const issueLabels = labels.map(label=>label.name);
+  const issueLabels = labels.map(label=>label);
   // if labels not contain bug then  push bug to
   if (!issueLabels.includes('bug')) {
     issueLabels.push('bug');
