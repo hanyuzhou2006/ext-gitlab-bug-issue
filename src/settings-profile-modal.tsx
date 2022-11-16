@@ -11,13 +11,14 @@ export function NewProfileModal(props) {
   const [profileName, setProfileName] = React.useState('');
   const [projectAddress, setProjectAddress] = React.useState('');
   const [privateToken, setPrivateToken] = React.useState('');
-
+  const [versionPath, setVersionPath] = React.useState('');
   async function newProfile() {
     try {
       await newProjectProfile({
         profileName,
         projectAddress,
-        privateToken
+        privateToken,
+        versionPath,
       });
     } catch (err) {
       alert(err.message);
@@ -43,6 +44,9 @@ export function NewProfileModal(props) {
       <TextField label="Gitlab private_token" value={privateToken} required onChange={(e, value) => {
         setPrivateToken(value);
       }} />
+      <TextField label="版本路径" value={versionPath} onChange={(e, value) => {
+        setVersionPath(value);
+      }} />
       <Stack horizontal horizontalAlign='end' tokens={{
         childrenGap: 40
       }}>
@@ -57,13 +61,16 @@ export function EditProfileMoal(props) {
   const { isModalOpened, closeModal, setUpdated, item } = props;
   const projectAddressRef = useRef(null);
   const privateTokenRef = useRef(null);
+  const versionPathRef = useRef(null);
   async function submit() {
     const projectAddress = projectAddressRef.current.value;
     const privateToken = privateTokenRef.current.value;
+    const versionPath = versionPathRef.current.value;
     await newProjectProfile({
       profileName: item.profileName,
       projectAddress,
-      privateToken
+      privateToken,
+      versionPath,
     });
     closeModal();
     setUpdated(Date.now());
@@ -82,7 +89,9 @@ export function EditProfileMoal(props) {
       <TextField label="Gitlab private_token" defaultValue={item.privateToken} required componentRef={
         privateTokenRef
       } />
-
+      <TextField label="版本路径" defaultValue={item.versionPath} componentRef={
+        versionPathRef
+      } />
       <Stack horizontal horizontalAlign='end' tokens={{
         childrenGap: 40
       }}>
@@ -133,6 +142,7 @@ export function EditLabelsModal(props) {
       projectAddress: item.projectAddress,
       privateToken: item.privateToken,
       labels: selectedLabels,
+      versionPath: item.versionPath,
     });
     closeModal();
     setUpdated(Date.now());

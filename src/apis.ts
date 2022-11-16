@@ -34,8 +34,8 @@ export async function newIssue(projectAddress: string, privateToken: string, tit
   
   const issueLabels = labels.map(label=>label);
   // if labels not contain bug then  push bug to
-  if (!issueLabels.includes('bug')) {
-    issueLabels.push('bug');
+  if (!issueLabels.includes('Bug')) {
+    issueLabels.push('Bug');
   }
 
   const res = await fetch(`${projectApiUrl}/issues`, {

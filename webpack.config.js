@@ -13,6 +13,9 @@ module.exports = {
       import: './src/settings.tsx',
     },
   },
+  watchOptions: {
+    poll: true,
+  },
   module: {
     rules: [
       {

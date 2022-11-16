@@ -32,6 +32,12 @@ const formTokens: IStackTokens = {
   childrenGap: 20,
 }
 
+async function getVersion(url: string, versionPath: string) {
+  const origin = new URL(url).origin;
+  const versionUrl = `${origin}/${versionPath}`;
+  return fetch(versionUrl).then(res => res.text());
+}
+
 function Content() {
   const [screenshotUrl, setScreenshotUrl] = useState('');
 
@@ -48,6 +54,7 @@ function Content() {
   const [checked, setChecked] = useState(false);
   const [optionalLabels, setOptionalLabels] = useState<LabelProp[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
+  const [version, setVersion] = useState('');
 
   const { ref, width, height } = useNodeSize();
 
@@ -76,6 +83,11 @@ function Content() {
           setProjectAddress(profile.projectAddress);
           setPrivateToken(profile.privateToken);
           setOptionalLabels(profile.labels);
+          if (profile.versionPath) {
+            getVersion(url, profile.versionPath).then((version) => {
+              setVersion(version);
+            });
+          }
         }
       })
     }
@@ -92,7 +104,7 @@ function Content() {
     try {
       const file = await screenshot.toBlob();
       const image = await uploadImage(projectAddress, privateToken, file);
-      const markdown = createIssueMarkDown(userAgent, url, steps, image, actual, expected);
+      const markdown = createIssueMarkDown(userAgent, url, steps, image, actual, expected, version);
       const issue = await newIssue(projectAddress, privateToken, title, markdown, labels);
       location.href = issue.web_url;
     } catch (e) {
@@ -112,6 +124,10 @@ function Content() {
       </Stack>
       <Stack tokens={formTokens} styles={formStyles}>
         <TextField label="原始地址" value={url} readOnly />
+
+        <TextField label="版本" value={version} onChange={(e, value) => {
+          setVersion(value);
+        }} />
 
         <TextField label="GitLab 项目地址" value={projectAddress} onChange={(e, value) => {
           setProjectAddress(value);

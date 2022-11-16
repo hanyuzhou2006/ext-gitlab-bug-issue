@@ -9,6 +9,7 @@ export function getUserAgent() {
  * ## 前提条件
  * 1. 浏览器环境 {userAgent}
  * 1. 测试地址 {orginUrl}
+ * 1. 版本 {version}
  * 1. 测试时间 {now}
  * ## 重现步骤
  * {steps}
@@ -20,11 +21,13 @@ export function getUserAgent() {
  * {expected}
  * @returns {string}
  */
-export function createIssueMarkDown(userAgent, orginUrl, steps, screenshot, actual, expected) {
+export function createIssueMarkDown(userAgent: string, orginUrl: string, steps: string,
+  screenshot: string, actual: string, expected: string, version?: string) {
   return `
   ## 前提条件
   1. 浏览器环境 ${userAgent}
   1. 测试地址 ${orginUrl}
+  1. 版本 ${version}
   1. 测试时间 ${new Date().toLocaleString()}
   ## 重现步骤
   ${steps}
@@ -44,6 +47,7 @@ export type ProjectProfile = {
   projectAddress: string,
   privateToken: string,
   labels?: LabelProp[],
+  versionPath: string,
 }
 
 export type ProjectsProfile = {
@@ -51,6 +55,7 @@ export type ProjectsProfile = {
     projectAddress: string,
     privateToken: string,
     labels?: LabelProp[],
+    versionPath: string,
   }
 }
 
@@ -67,6 +72,7 @@ export async function newProjectProfile(profile: ProjectProfile) {
     projectAddress: profile.projectAddress,
     privateToken: profile.privateToken,
     labels: profile.labels || [],
+    versionPath: profile.versionPath || '',
   }
   await setProjectsProfile(profiles);
 }
@@ -135,6 +141,7 @@ export async function getProfiles(): Promise<ProjectProfile[]> {
       projectAddress: profile.projectAddress,
       privateToken: profile.privateToken,
       labels: profile.labels || [],
+      versionPath: profile.versionPath || '',
     }
   })
 }
@@ -257,7 +264,8 @@ export async function getProjectProfile(key: string): Promise<ProjectProfile | n
       profileName: key,
       projectAddress: profile.projectAddress,
       privateToken: profile.privateToken,
-      labels: profile.labels
+      labels: profile.labels,
+      versionPath: profile.versionPath,
     }
   }
   return null;

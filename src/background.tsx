@@ -23,6 +23,7 @@ async function shot() {
   await chrome.tabs.create({ url });
 }
 
+
 async function setting() {
   const url = chrome.runtime.getURL("/html/settings.html");
   await chrome.tabs.create({ url });

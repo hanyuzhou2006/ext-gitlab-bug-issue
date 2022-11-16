@@ -62,6 +62,13 @@ export function SettingsProfile() {
         return null;
       }
     }, {
+      key: 'versionPath',
+      name: '版本路径',
+      minWidth: 100,
+      onRender: (item: ProjectProfile) => {
+        return <span>{item.versionPath}</span>
+      },
+    }, {
       key: 'actions',
       name: '操作',
       minWidth: 100,
