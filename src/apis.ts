@@ -31,13 +31,7 @@ export async function newIssue(projectAddress: string, privateToken: string, tit
   labels: string[]) {
   const description = markdown;
   const projectApiUrl = translateProjectUrl(projectAddress);
-  
-  const issueLabels = labels.map(label=>label);
-  // if labels not contain bug then  push bug to
-  if (!issueLabels.includes('Bug')) {
-    issueLabels.push('Bug');
-  }
-
+ 
   const res = await fetch(`${projectApiUrl}/issues`, {
     method: 'POST',
     headers: {
@@ -47,7 +41,7 @@ export async function newIssue(projectAddress: string, privateToken: string, tit
     body: JSON.stringify({
       title,
       description,
-      labels: issueLabels.join(',')
+      labels: labels.join(',')
     })
   })
   if (res.status >= 200 && res.status < 400) {

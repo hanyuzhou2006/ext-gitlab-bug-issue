@@ -35,7 +35,12 @@ const formTokens: IStackTokens = {
 async function getVersion(url: string, versionPath: string) {
   const origin = new URL(url).origin;
   const versionUrl = `${origin}/${versionPath}`;
-  return fetch(versionUrl).then(res => res.text());
+  return fetch(versionUrl).then(res => {
+    if(res.status >= 200 && res.status < 400){
+      return res.text();
+    }
+    return '';
+  });
 }
 
 function Content() {
@@ -85,7 +90,7 @@ function Content() {
           setOptionalLabels(profile.labels);
           if (profile.versionPath) {
             getVersion(url, profile.versionPath).then((version) => {
-              setVersion(version);
+              setVersion(version.trim());
             });
           }
         }
