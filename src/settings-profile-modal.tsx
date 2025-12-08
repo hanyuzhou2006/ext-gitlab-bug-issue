@@ -12,6 +12,28 @@ const extractionModeOptions: IDropdownOption[] = [
   { key: 'regex', text: '正则表达式' },
 ];
 
+function getExtractionRulePlaceholder(mode: 'text' | 'json' | 'regex'): string {
+  switch (mode) {
+    case 'json':
+      return '例如: version 或 data.version';
+    case 'regex':
+      return '例如: version: (.+)';
+    default:
+      return '';
+  }
+}
+
+function getExtractionRuleDescription(mode: 'text' | 'json' | 'regex'): string {
+  switch (mode) {
+    case 'json':
+      return 'JSON路径，如 version 或 data.version';
+    case 'regex':
+      return '正则表达式，第一个捕获组或完整匹配';
+    default:
+      return '全文本模式不需要解析规则';
+  }
+}
+
 export function NewProfileModal(props) {
   const { isModalOpened, closeModal, setUpdated } = props;
   const [profileName, setProfileName] = React.useState('');
@@ -62,11 +84,11 @@ export function NewProfileModal(props) {
           setVersionExtractionMode(option.key as 'text' | 'json' | 'regex');
         }} />
       <TextField label="版本解析规则" value={versionExtractionRule} 
-        placeholder={versionExtractionMode === 'json' ? '例如: version 或 data.version' : versionExtractionMode === 'regex' ? '例如: version: (.+)' : ''}
+        placeholder={getExtractionRulePlaceholder(versionExtractionMode)}
         onChange={(e, value) => {
           setVersionExtractionRule(value);
         }} 
-        description={versionExtractionMode === 'json' ? 'JSON路径，如 version 或 data.version' : versionExtractionMode === 'regex' ? '正则表达式，第一个捕获组或完整匹配' : '全文本模式不需要解析规则'}
+        description={getExtractionRuleDescription(versionExtractionMode)}
         disabled={versionExtractionMode === 'text'}
       />
       <Stack horizontal horizontalAlign='end' tokens={{
@@ -131,11 +153,11 @@ export function EditProfileMoal(props) {
           setVersionExtractionMode(option.key as 'text' | 'json' | 'regex');
         }} />
       <TextField label="版本解析规则" value={versionExtractionRule} 
-        placeholder={versionExtractionMode === 'json' ? '例如: version 或 data.version' : versionExtractionMode === 'regex' ? '例如: version: (.+)' : ''}
+        placeholder={getExtractionRulePlaceholder(versionExtractionMode)}
         onChange={(e, value) => {
           setVersionExtractionRule(value);
         }} 
-        description={versionExtractionMode === 'json' ? 'JSON路径，如 version 或 data.version' : versionExtractionMode === 'regex' ? '正则表达式，第一个捕获组或完整匹配' : '全文本模式不需要解析规则'}
+        description={getExtractionRuleDescription(versionExtractionMode)}
         disabled={versionExtractionMode === 'text'}
       />
       <Stack horizontal horizontalAlign='end' tokens={{

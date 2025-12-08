@@ -298,6 +298,9 @@ export async function getProfileByUrl(url: string): Promise<ProjectProfile | nul
  * @param mode - Extraction mode: 'text', 'json', or 'regex'
  * @param rule - Extraction rule (JSON path for 'json' mode, regex pattern for 'regex' mode)
  * @returns Extracted version string
+ * 
+ * Note: JSON mode supports simple dot notation (e.g., "version" or "data.version") 
+ * but does not support array indices.
  */
 export function extractVersion(text: string, mode: 'text' | 'json' | 'regex' = 'text', rule?: string): string {
   if (!text) {
