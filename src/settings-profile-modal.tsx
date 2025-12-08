@@ -6,12 +6,20 @@ import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
 
 const stackTokens: IStackTokens = { childrenGap: 20, padding: 20 };
 
+const extractionModeOptions: IDropdownOption[] = [
+  { key: 'text', text: '全文本' },
+  { key: 'json', text: 'JSON' },
+  { key: 'regex', text: '正则表达式' },
+];
+
 export function NewProfileModal(props) {
   const { isModalOpened, closeModal, setUpdated } = props;
   const [profileName, setProfileName] = React.useState('');
   const [projectAddress, setProjectAddress] = React.useState('');
   const [privateToken, setPrivateToken] = React.useState('');
   const [versionPath, setVersionPath] = React.useState('');
+  const [versionExtractionMode, setVersionExtractionMode] = React.useState<'text' | 'json' | 'regex'>('text');
+  const [versionExtractionRule, setVersionExtractionRule] = React.useState('');
   async function newProfile() {
     try {
       await newProjectProfile({
@@ -19,6 +27,8 @@ export function NewProfileModal(props) {
         projectAddress,
         privateToken,
         versionPath,
+        versionExtractionMode,
+        versionExtractionRule,
       });
     } catch (err) {
       alert(err.message);
@@ -47,6 +57,18 @@ export function NewProfileModal(props) {
       <TextField label="版本路径" value={versionPath} onChange={(e, value) => {
         setVersionPath(value);
       }} />
+      <Dropdown label="版本解析模式" selectedKey={versionExtractionMode} options={extractionModeOptions} 
+        onChange={(e, option) => {
+          setVersionExtractionMode(option.key as 'text' | 'json' | 'regex');
+        }} />
+      <TextField label="版本解析规则" value={versionExtractionRule} 
+        placeholder={versionExtractionMode === 'json' ? '例如: version 或 data.version' : versionExtractionMode === 'regex' ? '例如: version: (.+)' : ''}
+        onChange={(e, value) => {
+          setVersionExtractionRule(value);
+        }} 
+        description={versionExtractionMode === 'json' ? 'JSON路径，如 version 或 data.version' : versionExtractionMode === 'regex' ? '正则表达式，第一个捕获组或完整匹配' : '全文本模式不需要解析规则'}
+        disabled={versionExtractionMode === 'text'}
+      />
       <Stack horizontal horizontalAlign='end' tokens={{
         childrenGap: 40
       }}>
@@ -62,6 +84,16 @@ export function EditProfileMoal(props) {
   const projectAddressRef = useRef(null);
   const privateTokenRef = useRef(null);
   const versionPathRef = useRef(null);
+  const [versionExtractionMode, setVersionExtractionMode] = React.useState<'text' | 'json' | 'regex'>('text');
+  const [versionExtractionRule, setVersionExtractionRule] = React.useState('');
+
+  useEffect(() => {
+    if (item) {
+      setVersionExtractionMode(item.versionExtractionMode || 'text');
+      setVersionExtractionRule(item.versionExtractionRule || '');
+    }
+  }, [item]);
+
   async function submit() {
     const projectAddress = projectAddressRef.current.value;
     const privateToken = privateTokenRef.current.value;
@@ -71,6 +103,8 @@ export function EditProfileMoal(props) {
       projectAddress,
       privateToken,
       versionPath,
+      versionExtractionMode,
+      versionExtractionRule,
     });
     closeModal();
     setUpdated(Date.now());
@@ -92,6 +126,18 @@ export function EditProfileMoal(props) {
       <TextField label="版本路径" defaultValue={item.versionPath} componentRef={
         versionPathRef
       } />
+      <Dropdown label="版本解析模式" selectedKey={versionExtractionMode} options={extractionModeOptions} 
+        onChange={(e, option) => {
+          setVersionExtractionMode(option.key as 'text' | 'json' | 'regex');
+        }} />
+      <TextField label="版本解析规则" value={versionExtractionRule} 
+        placeholder={versionExtractionMode === 'json' ? '例如: version 或 data.version' : versionExtractionMode === 'regex' ? '例如: version: (.+)' : ''}
+        onChange={(e, value) => {
+          setVersionExtractionRule(value);
+        }} 
+        description={versionExtractionMode === 'json' ? 'JSON路径，如 version 或 data.version' : versionExtractionMode === 'regex' ? '正则表达式，第一个捕获组或完整匹配' : '全文本模式不需要解析规则'}
+        disabled={versionExtractionMode === 'text'}
+      />
       <Stack horizontal horizontalAlign='end' tokens={{
         childrenGap: 40
       }}>
@@ -143,6 +189,8 @@ export function EditLabelsModal(props) {
       privateToken: item.privateToken,
       labels: selectedLabels,
       versionPath: item.versionPath,
+      versionExtractionMode: item.versionExtractionMode,
+      versionExtractionRule: item.versionExtractionRule,
     });
     closeModal();
     setUpdated(Date.now());

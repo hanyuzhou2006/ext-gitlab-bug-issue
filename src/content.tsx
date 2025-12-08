@@ -4,7 +4,7 @@ import '@cloudogu/react-img-editor/lib/index.css'
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Stack, IStackTokens, IStackStyles } from '@fluentui/react/lib/Stack';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
-import { getUserAgent, createIssueMarkDown, getSelectedProfile } from "./util";
+import { getUserAgent, createIssueMarkDown, getSelectedProfile, extractVersion } from "./util";
 import { newIssue, uploadImage } from "./apis";
 import useNodeSize from "./useNodeSize";
 import { createScreenshot, Editor } from "./content-screenshot-editor";
@@ -32,12 +32,14 @@ const formTokens: IStackTokens = {
   childrenGap: 20,
 }
 
-async function getVersion(url: string, versionPath: string) {
+async function getVersion(url: string, versionPath: string, extractionMode?: 'text' | 'json' | 'regex', extractionRule?: string) {
   const origin = new URL(url).origin;
   const versionUrl = `${origin}/${versionPath}`;
   return fetch(versionUrl).then(res => {
     if(res.status >= 200 && res.status < 400){
-      return res.text();
+      return res.text().then(text => {
+        return extractVersion(text, extractionMode, extractionRule);
+      });
     }
     return '';
   });
@@ -89,7 +91,7 @@ function Content() {
           setPrivateToken(profile.privateToken);
           setOptionalLabels(profile.labels);
           if (profile.versionPath) {
-            getVersion(url, profile.versionPath).then((version) => {
+            getVersion(url, profile.versionPath, profile.versionExtractionMode, profile.versionExtractionRule).then((version) => {
               setVersion(version.trim());
             });
           }
