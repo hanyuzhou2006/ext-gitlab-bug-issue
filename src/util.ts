@@ -48,6 +48,8 @@ export type ProjectProfile = {
   privateToken: string,
   labels?: LabelProp[],
   versionPath: string,
+  versionExtractionMode?: 'text' | 'json' | 'regex',
+  versionExtractionRule?: string,
 }
 
 export type ProjectsProfile = {
@@ -56,6 +58,8 @@ export type ProjectsProfile = {
     privateToken: string,
     labels?: LabelProp[],
     versionPath: string,
+    versionExtractionMode?: 'text' | 'json' | 'regex',
+    versionExtractionRule?: string,
   }
 }
 
@@ -73,6 +77,8 @@ export async function newProjectProfile(profile: ProjectProfile) {
     privateToken: profile.privateToken,
     labels: profile.labels || [],
     versionPath: profile.versionPath || '',
+    versionExtractionMode: profile.versionExtractionMode || 'text',
+    versionExtractionRule: profile.versionExtractionRule || '',
   }
   await setProjectsProfile(profiles);
 }
@@ -142,6 +148,8 @@ export async function getProfiles(): Promise<ProjectProfile[]> {
       privateToken: profile.privateToken,
       labels: profile.labels || [],
       versionPath: profile.versionPath || '',
+      versionExtractionMode: profile.versionExtractionMode || 'text',
+      versionExtractionRule: profile.versionExtractionRule || '',
     }
   })
 }
@@ -266,6 +274,8 @@ export async function getProjectProfile(key: string): Promise<ProjectProfile | n
       privateToken: profile.privateToken,
       labels: profile.labels,
       versionPath: profile.versionPath,
+      versionExtractionMode: profile.versionExtractionMode || 'text',
+      versionExtractionRule: profile.versionExtractionRule || '',
     }
   }
   return null;
@@ -281,4 +291,65 @@ export async function getProfileByUrl(url: string): Promise<ProjectProfile | nul
   }
   return null;
 }
+
+/**
+ * Extract version from text based on extraction mode and rule
+ * @param text - The raw text response from version URL
+ * @param mode - Extraction mode: 'text', 'json', or 'regex'
+ * @param rule - Extraction rule (JSON path for 'json' mode, regex pattern for 'regex' mode)
+ * @returns Extracted version string
+ * 
+ * Note: JSON mode supports simple dot notation (e.g., "version" or "data.version") 
+ * but does not support array indices.
+ */
+export function extractVersion(text: string, mode: 'text' | 'json' | 'regex' = 'text', rule?: string): string {
+  if (!text) {
+    return '';
+  }
+
+  // Default mode: return full text
+  if (mode === 'text' || !mode) {
+    return text.trim();
+  }
+
+  // JSON mode: extract value using JSON path
+  if (mode === 'json' && rule) {
+    try {
+      const json = JSON.parse(text);
+      // Support simple JSON path like "version" or "data.version"
+      const paths = rule.split('.');
+      let value = json;
+      for (const path of paths) {
+        if (value && typeof value === 'object' && path in value) {
+          value = value[path];
+        } else {
+          return '';
+        }
+      }
+      return String(value).trim();
+    } catch (e) {
+      console.error('Failed to parse JSON:', e);
+      return '';
+    }
+  }
+
+  // Regex mode: extract value using regex pattern
+  if (mode === 'regex' && rule) {
+    try {
+      const regex = new RegExp(rule);
+      const match = text.match(regex);
+      if (match) {
+        // Return first capture group if exists, otherwise return full match
+        return (match[1] !== undefined ? match[1] : match[0]).trim();
+      }
+      return '';
+    } catch (e) {
+      console.error('Invalid regex pattern:', e);
+      return '';
+    }
+  }
+
+  return text.trim();
+}
+
 
