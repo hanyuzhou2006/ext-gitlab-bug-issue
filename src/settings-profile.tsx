@@ -10,6 +10,12 @@ import { GitlabLabel, GitlabLabels } from './gitlab-label';
 import { MessageBar, Stack } from '@fluentui/react';
 initializeIcons(/* optional base url */);
 
+const VERSION_EXTRACTION_MODE_MAP = {
+  'text': '全文本',
+  'json': 'JSON',
+  'regex': '正则表达式'
+};
+
 export function SettingsProfile() {
   const [profiles, setProfiles] = useState([]);
   const [updated, setUpdated] = useState(Date.now());
@@ -73,12 +79,7 @@ export function SettingsProfile() {
       name: '版本解析模式',
       minWidth: 100,
       onRender: (item: ProjectProfile) => {
-        const modeMap = {
-          'text': '全文本',
-          'json': 'JSON',
-          'regex': '正则表达式'
-        };
-        return <span>{modeMap[item.versionExtractionMode] || '全文本'}</span>
+        return <span>{VERSION_EXTRACTION_MODE_MAP[item.versionExtractionMode] || VERSION_EXTRACTION_MODE_MAP['text']}</span>
       },
     }, {
       key: 'versionExtractionRule',
