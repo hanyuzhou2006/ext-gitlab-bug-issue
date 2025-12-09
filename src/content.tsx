@@ -34,7 +34,9 @@ const formTokens: IStackTokens = {
 
 async function getVersion(url: string, versionPath: string) {
   const origin = new URL(url).origin;
-  const versionUrl = `${origin}/${versionPath}`;
+  // Remove leading slash from versionPath to avoid double slashes
+  const cleanVersionPath = versionPath.startsWith('/') ? versionPath.substring(1) : versionPath;
+  const versionUrl = `${origin}/${cleanVersionPath}`;
   return fetch(versionUrl).then(res => {
     if(res.status >= 200 && res.status < 400){
       return res.text();
