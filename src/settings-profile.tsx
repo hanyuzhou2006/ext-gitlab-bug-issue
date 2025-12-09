@@ -69,6 +69,25 @@ export function SettingsProfile() {
         return <span>{item.versionPath}</span>
       },
     }, {
+      key: 'versionExtractionMode',
+      name: '版本解析模式',
+      minWidth: 100,
+      onRender: (item: ProjectProfile) => {
+        const modeMap = {
+          'text': '全文本',
+          'json': 'JSON',
+          'regex': '正则表达式'
+        };
+        return <span>{modeMap[item.versionExtractionMode] || '全文本'}</span>
+      },
+    }, {
+      key: 'versionExtractionRule',
+      name: '版本解析规则',
+      minWidth: 150,
+      onRender: (item: ProjectProfile) => {
+        return <span>{item.versionExtractionRule || '-'}</span>
+      },
+    }, {
       key: 'actions',
       name: '操作',
       minWidth: 100,
