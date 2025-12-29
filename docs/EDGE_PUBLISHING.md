@@ -30,7 +30,7 @@ Before the automated publishing can work, you need to configure the following se
 
 Follow the official Microsoft documentation to generate your API credentials:
 
-[Using the Microsoft Edge Add-ons API](https://docs.microsoft.com/en-us/microsoft-edge/extensions-chromium/publish/api/using-addons-api)
+[Using the Microsoft Edge Add-ons API](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/publish/api/using-addons-api)
 
 The documentation covers:
 - How to enable API access in Partner Center
@@ -63,4 +63,4 @@ If the workflow fails:
 3. **Review API error messages**: The Edge Add-ons API may reject the submission for various reasons (e.g., validation errors, existing submission in review, etc.)
 
 For detailed API error codes and their meanings, refer to:
-[Microsoft Edge Add-ons API Reference](https://docs.microsoft.com/en-us/microsoft-edge/extensions-chromium/publish/api/addons-api-reference)
+[Microsoft Edge Add-ons API Reference](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/publish/api/addons-api-reference)
