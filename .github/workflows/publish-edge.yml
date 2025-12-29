@@ -31,6 +31,11 @@ jobs:
         working-directory: prod
         run: zip -r ../extension.zip .
       
+      - name: Verify package zip exists
+        run: |
+          ls -lh extension.zip
+          file extension.zip
+      
       - name: Publish to Microsoft Edge Add-ons
         if: success()
         uses: wdzeng/edge-addon@v2
