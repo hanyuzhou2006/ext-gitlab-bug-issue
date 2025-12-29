@@ -23,4 +23,41 @@
 1. [New issue](https://docs.gitlab.com/ee/api/issues.html#new-issue)
 1. [Upload a file](https://docs.gitlab.com/ee/api/projects.html#upload-a-file)
 1. [List labels](https://docs.gitlab.com/ee/api/labels.html#list-labels)
+
+## Automatic Publishing to Microsoft Edge Add-ons
+
+This repository includes a GitHub Action that automatically publishes the extension to Microsoft Edge Add-ons store when a new tag is pushed.
+
+### Setup
+
+To enable automatic publishing, you need to configure the following secrets in your GitHub repository settings (Settings → Secrets and variables → Actions):
+
+1. **EDGE_PRODUCT_ID**: Your extension's product ID from the Microsoft Edge Add-ons dashboard
+2. **EDGE_CLIENT_ID**: Client ID from your Azure AD app registration
+3. **EDGE_CLIENT_SECRET**: Client secret from your Azure AD app registration
+4. **EDGE_ACCESS_TOKEN_URL**: OAuth2 token endpoint URL (usually `https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token`)
+
+### How to get the required credentials:
+
+1. Go to [Microsoft Partner Center](https://partner.microsoft.com/dashboard)
+2. Navigate to your Edge extension
+3. Get the **Product ID** from the extension overview page
+4. Create an Azure AD app registration for API access:
+   - Go to [Azure Portal](https://portal.azure.com)
+   - Navigate to Azure Active Directory → App registrations
+   - Create a new registration
+   - Add API permissions for Microsoft Edge Add-ons
+   - Create a client secret
+   - Note the Client ID, Client Secret, and Tenant ID
+
+### Publishing a new version:
+
+Simply create and push a new tag:
+
+```bash
+git tag v0.0.4
+git push origin v0.0.4
+```
+
+The GitHub Action will automatically build and publish the extension to the Microsoft Edge Add-ons store.
   

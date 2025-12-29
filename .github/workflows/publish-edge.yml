@@ -1,0 +1,47 @@
+name: Publish to Microsoft Edge Add-ons
+
+# Trigger on tag push
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install --force
+      
+      - name: Build extension
+        run: npm run build
+      
+      - name: Create package zip
+        run: |
+          cd prod
+          zip -r ../extension.zip .
+          cd ..
+      
+      - name: Publish to Microsoft Edge Add-ons
+        uses: wdzeng/edge-addon@v1
+        with:
+          product-id: ${{ secrets.EDGE_PRODUCT_ID }}
+          client-id: ${{ secrets.EDGE_CLIENT_ID }}
+          client-secret: ${{ secrets.EDGE_CLIENT_SECRET }}
+          access-token-url: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
+          zip-path: extension.zip
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-package
+          path: extension.zip
