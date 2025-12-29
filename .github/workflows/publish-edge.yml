@@ -6,6 +6,14 @@ on:
     tags:
       - 'v*'
 
+# NOTE: This workflow requires the following secrets to be configured:
+# - EDGE_PRODUCT_ID: The ID of your Edge extension product
+# - EDGE_CLIENT_ID: The client ID for Edge Add-ons API
+# - EDGE_API_KEY: The API key for Edge Add-ons API
+#
+# To configure these secrets, go to:
+# Settings > Secrets and variables > Actions > New repository secret
+
 jobs:
   publish:
     runs-on: ubuntu-latest
