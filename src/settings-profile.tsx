@@ -3,12 +3,14 @@ import { getProfiles, ProjectProfile } from './util'
 import { DetailsList, IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
 import { useBoolean } from '@fluentui/react-hooks';
-import { initializeIcons } from '@fluentui/react/lib/Icons';
+//import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { EditLabelsModal, EditProfileMoal, NewProfileModal } from './settings-profile-modal';
 import { Actions } from './settings-profile-actions';
 import { GitlabLabel, GitlabLabels } from './gitlab-label';
 import { MessageBar, Stack } from '@fluentui/react';
-initializeIcons(/* optional base url */);
+//initializeIcons(/* optional base url */);
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
+initializeIcons('/fonts/');
 
 const VERSION_EXTRACTION_MODE_MAP = {
   'text': '全文本',
@@ -91,7 +93,8 @@ export function SettingsProfile() {
     }, {
       key: 'actions',
       name: '操作',
-      minWidth: 100,
+      minWidth: 180,
+      maxWidth: 200,
       onRender: (item: ProjectProfile) => {
         return <Actions item={item} setEditItem={setEditItem} setUpdated={setUpdated} openEditProfileModal={openEditProfileModal}
           openEditLabelsModal={openEditLabelsModal} />

@@ -1,5 +1,6 @@
 import { LabelProp } from "./gitlab-label";
 import { translateProjectUrl } from "./util";
+
 export async function uploadImage(projectAddress: string, privateToken: string, file: Blob) {
   const projectApiUrl = translateProjectUrl(projectAddress);
   const formData = new FormData();

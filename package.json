@@ -17,6 +17,7 @@
     "@types/chrome": "^0.0.183",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
+    "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^6.7.1",
     "esbuild-loader": "^2.18.0",
     "postcss": "^8.4.12",
