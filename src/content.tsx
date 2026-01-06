@@ -1,36 +1,62 @@
 import React, { useEffect, useState, useRef } from "react";
+import { createRoot } from  'react-dom/client';
 import ReactDOM from "react-dom";
-import '@cloudogu/react-img-editor/lib/index.css'
-import { TextField } from '@fluentui/react/lib/TextField';
-import { Stack, IStackTokens, IStackStyles } from '@fluentui/react/lib/Stack';
-import { PrimaryButton } from '@fluentui/react/lib/Button';
+import '@sansitech/react-img-editor/lib/index.css'
+//import { TextField } from '@fluentui/react/lib/TextField';
+//import { Stack, IStackTokens, IStackStyles } from '@fluentui/react/lib/Stack';
 import { getUserAgent, createIssueMarkDown, getSelectedProfile, extractVersion } from "./util";
 import { newIssue, uploadImage } from "./apis";
 import useNodeSize from "./useNodeSize";
 import { createScreenshot, Editor } from "./content-screenshot-editor";
 import { LabelProp } from "./gitlab-label";
-import { initializeIcons } from '@fluentui/react/lib/Icons';
+//import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { Labels } from "./content-labels";
+import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 
-initializeIcons(/* optional base url */);
+import { Input, Field, makeStyles, Button, Textarea } from '@fluentui/react-components';
+//import { TextField } from "@fluentui/react";
 
-const editorStyles: IStackStyles = {
+//initializeIcons(/* optional base url */);
+
+const useStyles = makeStyles({
   root: {
+    display: 'flex',
+    height: '100%',
+    gap: '20px',
+  },
+  editor: {
     width: '75%',
-  }
-}
-
-const formStyles: IStackStyles = {
-  root: {
+  },
+  form: {
     flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
+  editoken: {
+    gap: '20px',
+  },
+  formtoken: {
+    gap: '20px',
   }
-}
-const editorTokens: IStackTokens = {
-  childrenGap: 20,
-}
-const formTokens: IStackTokens = {
-  childrenGap: 20,
-}
+});
+// const editorStyles: IStackStyles = {
+//   root: {
+//     width: '75%',
+//   }
+// }
+
+// const formStyles: IStackStyles = {
+//   root: {
+//     flexGrow: 1,
+//   }
+// }
+// const editorTokens: IStackTokens = {
+//   childrenGap: 20,
+// }
+// const formTokens: IStackTokens = {
+//   childrenGap: 20,
+// }
 
 async function getVersion(url: string, versionPath: string, extractionMode?: 'text' | 'json' | 'regex', extractionRule?: string) {
   const origin = new URL(url).origin;
@@ -38,7 +64,7 @@ async function getVersion(url: string, versionPath: string, extractionMode?: 'te
   const cleanVersionPath = versionPath.startsWith('/') ? versionPath.substring(1) : versionPath;
   const versionUrl = `${origin}/${cleanVersionPath}`;
   return fetch(versionUrl).then(res => {
-    if(res.status >= 200 && res.status < 400){
+    if (res.status >= 200 && res.status < 400) {
       return res.text().then(text => {
         return extractVersion(text, extractionMode, extractionRule);
       });
@@ -64,6 +90,7 @@ function Content() {
   const [optionalLabels, setOptionalLabels] = useState<LabelProp[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   const [version, setVersion] = useState('');
+  const styles = useStyles();
 
   const { ref, width, height } = useNodeSize();
 
@@ -122,58 +149,114 @@ function Content() {
 
   }
 
-  return (
-    <Stack horizontal tokens={editorTokens} styles={{
-      root: { height: '100%' },
-    }}>
-      <Stack styles={editorStyles} >
+  return(
+    <div className={styles.root}>
+      <div className={styles.editor}>
         <main ref={ref} style={{ height: '100%' }}>
           <Editor width={width} height={height} stageRef={stageRef} url={screenshotUrl} />
         </main>
-      </Stack>
-      <Stack tokens={formTokens} styles={formStyles}>
-        <TextField label="原始地址" value={url} readOnly />
-
-        <TextField label="版本" value={version} onChange={(e, value) => {
-          setVersion(value);
-        }} />
-
-        <TextField label="GitLab 项目地址" value={projectAddress} onChange={(e, value) => {
-          setProjectAddress(value);
-        }} errorMessage={checkProjectAddressMessage()} />
-
-        <TextField label="Gitlab private_token" value={privateToken} type="password" required
-          onChange={(e, value) => {
-            setPrivateToken(value);
-          }} errorMessage={checkPrivateTokenMessage()} />
-
-        <TextField label="标题" value={title} required onChange={(e, value) => {
-          setTitle(value);
-        }} errorMessage={checkTitleMessage()} />
-
-        <TextField label="环境" value={userAgent} readOnly />
-
-        <TextField label="重现步骤" multiline value={steps} required onChange={(e, value) => {
-          setSteps(value);
-        }} errorMessage={checkStepsMessage()} />
-
-        <TextField label="实际结果" multiline value={actual} required onChange={(e, value) => {
-          setActual(value);
-        }} errorMessage={checkActualMessage()} />
-
-        <TextField label="预期结果" multiline value={expected} required onChange={(e, value) => {
-          setExpected(value);
-        }} errorMessage={checkExpectedMessage()} />
-
-        <Labels labels={optionalLabels} onChange={(_e, labels) => {
+      </div>
+      <div className={styles.form}>
+        <Field label="原始地址">
+          <Input value={url} readOnly />
+        </Field>
+        <Field label="版本">
+          <Input value={version} onChange={(e, data) => {
+            setVersion(data.value);
+          }} />
+        </Field>
+        <Field label="GitLab 项目地址" validationMessage={checkProjectAddressMessage()}>
+          <Input value={projectAddress} onChange={(e, data) => {
+            setProjectAddress(data.value);
+          }} />
+        </Field>
+        <Field label="Gitlab private_token" validationMessage={checkPrivateTokenMessage()}>
+          <Input value={privateToken} type="password" required onChange={(e, data) => { setPrivateToken(data.value); }} />
+        </Field>
+        <Field label="标题" validationMessage={checkTitleMessage()}>
+          <Input value={title} onChange={(e, data) => {
+            setTitle(data.value);
+          }} 
+          />
+        </Field>
+        <Field label="环境">
+          <Input value={userAgent} readOnly/>
+        </Field>
+        <Field label="重现步骤" validationMessage={checkActualMessage()}>
+          <Textarea value={steps} required onChange={(e, data) => {
+            setSteps(data.value);
+            }} />
+        </Field>
+        <Field label="实际结果" validationMessage={checkActualMessage()}>
+          <Textarea value={actual} required onChange={(e, data) => {
+            setActual(data.value);
+            }} />
+        </Field>
+        <Field label="预期结果" validationMessage={checkExpectedMessage()}>
+          <Textarea value={expected} required onChange={(e, data) => {
+            setExpected(data.value);
+          }} />
+        </Field>
+        <Labels labels={optionalLabels} onChange={(e, labels) => {
           setLabels(labels);
         }} />
-        <PrimaryButton onClick={submit}>提交</PrimaryButton>
-      </Stack>
-
-    </Stack>
-
+        <Button appearance="primary" onClick={submit}>提交</Button>
+      </div>
+    </div>
   )
+
+  // return (
+  //   <Stack horizontal tokens={editorTokens} styles={{
+  //     root: { height: '100%' },
+  //   }}>
+  //     <Stack styles={editorStyles} >
+  //       <main ref={ref} style={{ height: '100%' }}>
+  //         <Editor width={width} height={height} stageRef={stageRef} url={screenshotUrl} />
+  //       </main>
+  //     </Stack>
+  //     <Stack tokens={formTokens} styles={formStyles}>
+  //       <TextField label="原始地址" value={url} readOnly />
+
+  //       <TextField label="版本" value={version} onChange={(e, value) => {
+  //         setVersion(value);
+  //       }} />
+
+  //       <TextField label="GitLab 项目地址" value={projectAddress} onChange={(e, value) => {
+  //         setProjectAddress(value);
+  //       }} errorMessage={checkProjectAddressMessage()} />
+
+  //       <TextField label="Gitlab private_token" value={privateToken} type="password" required
+  //         onChange={(e, value) => {
+  //           setPrivateToken(value);
+  //         }} errorMessage={checkPrivateTokenMessage()} />
+
+  //       <TextField label="标题" value={title} required onChange={(e, value) => {
+  //         setTitle(value);
+  //       }} errorMessage={checkTitleMessage()} />
+
+  //       <TextField label="环境" value={userAgent} readOnly />
+
+  //       <TextField label="重现步骤" multiline value={steps} required onChange={(e, value) => {
+  //         setSteps(value);
+  //       }} errorMessage={checkStepsMessage()} />
+
+  //       <TextField label="实际结果" multiline value={actual} required onChange={(e, value) => {
+  //         setActual(value);
+  //       }} errorMessage={checkActualMessage()} />
+
+  //       <TextField label="预期结果" multiline value={expected} required onChange={(e, value) => {
+  //         setExpected(value);
+  //       }} errorMessage={checkExpectedMessage()} />
+
+  //       <Labels labels={optionalLabels} onChange={(_e, labels) => {
+  //         setLabels(labels);
+  //       }} />
+  //       <Button appearance="primary" onClick={submit}>提交</Button>
+  //     </Stack>
+
+  //   </Stack>
+
+  // )
 
   function checkProjectAddressMessage(): string | JSX.Element {
     return checked && !projectAddress && '请输入 GitLab 项目地址';
@@ -200,5 +283,17 @@ function Content() {
   }
 }
 
+const AppRoot = ({children}) => (
+  <FluentProvider theme={webLightTheme}>
+    {children}
+  </FluentProvider>
+);
 
-ReactDOM.render(<Content />, document.getElementById('content'));
+
+const App = () => (
+  <AppRoot>
+    <Content />
+  </AppRoot>
+);
+
+createRoot(document.getElementById('content')).render(<App />);

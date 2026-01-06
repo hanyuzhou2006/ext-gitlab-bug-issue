@@ -1,5 +1,7 @@
 import React from "react";
-import { IconButton } from "@fluentui/react";
+//import { IconButton } from "@fluentui/react";
+import {Button} from "@fluentui/react-components";
+import { DeleteRegular } from "@fluentui/react-icons";
 
 export function Actions(props){
   const { item, onDel } = props;
@@ -10,12 +12,11 @@ export function Actions(props){
 
 export function DelAction(props){
   const { onDel } = props;
-  return <IconButton iconProps={{
-    iconName: 'Delete',
-    styles: {
-      root: {
-        color: 'red',
-      }
-    }
-  }} onClick={onDel} />
+  return <Button 
+  icon={<DeleteRegular />}
+  appearance="subtle"
+  onClick={onDel} 
+  style={{ color: 'red' }}
+  aria-label="删除"
+  />
 }
