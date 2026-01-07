@@ -11,8 +11,6 @@ const useStyles = makeStyles({
     height: '350px',
     boxSizing: 'border-box',
     border: `1px solid ${tokens.colorNeutralStroke1}`,
-    overflowY: 'auto',
-    overflowX: 'hidden',
   },
   nav: {
     width: '100%',

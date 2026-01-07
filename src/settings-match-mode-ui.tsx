@@ -16,15 +16,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    paddingLeft: '24px',
   },
   fullWidth: {
     width: '100%',
     minWidth: 0,
   },
   button: {
-    paddingTop: '10px',
-    paddingBottom: '10px',
     width: '100%',
   },
   dragging: {

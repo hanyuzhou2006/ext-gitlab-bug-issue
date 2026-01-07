@@ -11,7 +11,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     rowGap: '20px',
     alignItems: 'stretch',
-    paddingLeft: '24px',
   },
   largeButton: {
     width: '200px',

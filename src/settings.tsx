@@ -15,7 +15,6 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     width: '100%',
     minWidth: 0,
-    overflow: 'hidden'
   },
   onlet: {
     display: 'flex',
@@ -23,8 +22,8 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flex: '1 1 auto',
     minWidth: 0,
-    overflow: 'auto',
     flexShrink: 1,
+    padding : '24px',
   },
   nav: {
     display: 'flex',

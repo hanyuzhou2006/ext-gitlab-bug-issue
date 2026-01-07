@@ -31,16 +31,11 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   root: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
     gap: '16px',
-    paddingLeft: '24px',
-    boxSizing: 'border-box',
-    overflowX: 'hidden',
     width: '100%',
-    minWidth: 0,
   }
-
 });
 
 const columnSizingOptions = {
@@ -137,10 +132,6 @@ export function SettingsProfile() {
         sortable={false}
         getRowId={(item) => item.profileName}
         focusMode="composite"
-        style={{  
-          minWidth: "100%",
-          width: "100%"
-        }}
       >
         <DataGridHeader>
           <DataGridRow>
