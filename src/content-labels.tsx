@@ -51,7 +51,7 @@ export function Labels(props: { labels: LabelProp[], onChange: (e, labels: strin
   return <div className={styles.root}>
     <GitlabLabels labels={global} />
     {
-      scoped.length && <>
+      scoped.length ? <>
         {
           scoped.map(({ scope, labels }) => {
             <RadioGroup key={scope} value={scopedSelections.current.find(s => s.scope === scope)?.key ?? labels[0].name}
@@ -67,7 +67,7 @@ export function Labels(props: { labels: LabelProp[], onChange: (e, labels: strin
 
           })
         }
-      </>
+      </>:<></>
     }
   </div>
 }
