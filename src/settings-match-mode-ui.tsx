@@ -211,8 +211,8 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
         </SortableContext>
       </DndContext>
       <div style={{ padding: '10px', width: '100%', boxSizing: 'border-box' }}>
-        <Button icon={<AddRegular />} className={styles.button} onClick={() => setRules([...rules, createRule()])}
-        ></Button>
+        <Button size='large' className={styles.button} onClick={() => setRules([...rules, createRule()])}
+        ><AddRegular/></Button>
       </div>
     </div>
   );
