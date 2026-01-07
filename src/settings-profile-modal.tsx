@@ -26,6 +26,11 @@ const useStyles = makeStyles({
   },
   surface: {
     maxWidth: '640px', // 略大于 600px 以留出 padding
+  },
+  button: {
+    display: 'flex',
+    gap: '4px', 
+    flexWrap: 'wrap', 
   }
 });
 
@@ -276,9 +281,29 @@ export function EditLabelsModal(props) {
               <Dropdown
                 multiselect
                 selectedOptions={selectedKeys}
-                value={selectedKeys.join(', ')}
                 onOptionSelect={(e, data) => setSelectedKeys(data.selectedOptions)}
-
+                button={{
+                  children: (
+                    <div className={styles.button}>
+                      {selectedKeys.length > 0 ? (
+                        selectedKeys.map((key) => {
+                          const label = labels.find((l) => l.name === key);
+                          if (!label) return null;
+                          return (
+                            <GitlabLabel 
+                              key={label.name} 
+                              name={label.name} 
+                              color={label.color} 
+                              textColor={label.textColor} 
+                            />
+                          );
+                        })
+                      ) : (
+                        <span style={{ color: tokens.colorNeutralForeground4 }}>请选择标签</span>
+                      )}
+                    </div>
+                  ),
+                }}
               >
                 {labels.map((label) => (
                   <Option text={label.name} key={label.name} value={label.name}>
