@@ -1,5 +1,4 @@
 import React from 'react';
-//import { INavStyles, Nav } from "@fluentui/react"
 import { useLocation, useNavigate, Location } from 'react-router-dom';
 
 import { NavDrawer, NavItem, makeStyles, NavDrawerBody, tokens } from '@fluentui/react-components';
@@ -40,14 +39,7 @@ const navs = [
   navProfile,
   navMatch
 ]
-// const navLinks = [
-//   {
-//     links: [
-//       navProfile,
-//       navMatch
-//     ]
-//   }
-// ]
+
 function getKey(location: Location) {
   let locationPathname = location.pathname;
 

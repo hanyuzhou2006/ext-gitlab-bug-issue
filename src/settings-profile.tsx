@@ -1,14 +1,9 @@
 import React, { useEffect, useState, version } from 'react';
 import { getProfiles, ProjectProfile } from './util'
-//import { DetailsList, IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList';
-//import { PrimaryButton } from '@fluentui/react/lib/Button';
 import { useBoolean } from '@fluentui/react-hooks';
-//import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { EditLabelsModal, EditProfileMoal, NewProfileModal } from './settings-profile-modal';
 import { Actions } from './settings-profile-actions';
 import { GitlabLabel, GitlabLabels } from './gitlab-label';
-//import { Stack } from '@fluentui/react';
-//initializeIcons(/* optional base url */);
 
 import { Button, MessageBar, DataGrid, DataGridBody, DataGridCell, DataGridHeader, DataGridRow, TableColumnDefinition, createTableColumn, makeStyles } from '@fluentui/react-components';
 
@@ -32,7 +27,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap', 
-    gap: '4px',       // 标签之间的间距
+    gap: '4px',       
     alignItems: 'center',
   },
   root: {
@@ -49,38 +44,9 @@ const useStyles = makeStyles({
 });
 
 const columnSizingOptions = {
-  // profileName: {
-  //   minWidth: 100,
-  //   maxWidth: 300,
-  //   defaultWidth: 150,
-  // },
-  // projectAddress: {
-  //   minWidth: 100,
-  //   defaultWidth: 200,
-  // },
-  // privateToken: {
-  //   minWidth: 400,
-  //   defaultWidth: 200,
-  // },
   labels: {
     idealWidth: 300,
   },
-  // versionPath: {
-  //   minWidth: 100,
-  //   defaultWidth: 150,
-  // },
-  // versionExtractionMode: {
-  //   minWidth: 100,
-  //   defaultWidth: 150,
-  // },
-  // versionExtractionRule: {
-  //   minWidth: 150,
-  //   defaultWidth: 200,
-  // },
-  // actions: {
-  //   minWidth: 100,
-  //   defaultWidth: 150,
-  // },
 };
 export function SettingsProfile() {
   const [profiles, setProfiles] = useState([]);
@@ -163,7 +129,6 @@ export function SettingsProfile() {
       <Button
         appearance='primary' className={styles.newButton}
         onClick={() => openNewProfileModal()}>新建配置</Button>
-      {/* <DetailsList selectionMode={SelectionMode.none} disableSelectionZone items={profiles} columns={columns} /> */}
       <DataGrid
         items={profiles}
         columns={columns}

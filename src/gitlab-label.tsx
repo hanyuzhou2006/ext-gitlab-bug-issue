@@ -89,15 +89,4 @@ export function GitlabLabels(props: {
       />
     ))}
   </div>
-  // <Stack style={{
-  //   display: 'block',
-  // }} tokens={{
-  //   childrenGap: 2
-  // }}>
-  //   {
-  //     labels.map(label => {
-  //       return <GitlabLabel key={label.name} name={label.name} color={label.color} textColor={label.textColor} />
-  //     })
-  //   }
-  // </Stack>;
 }

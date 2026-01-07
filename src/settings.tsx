@@ -1,16 +1,13 @@
 import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
-//import {IStackTokens } from '@fluentui/react';
 import { SettingsNav } from './settings-nav';
 import { SettingsProfile } from './settings-profile';
 import { SettingsMatch } from './settings-match';
 import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { makeStyles } from '@fluentui/react-components';
-//import { FluentProvider, teamsLightTheme } from '@fluentui/react-components';
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 
-//const stackTokens: IStackTokens = { childrenGap: 20, padding: 20 };
 
 const useStyles = makeStyles({
   commons: {

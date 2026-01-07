@@ -1,16 +1,10 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { createRoot } from  'react-dom/client';
-//import { Stack, IStackTokens } from '@fluentui/react';
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 import { getProfiles, getSelectedProfileName, setSelectedProfileName } from "./util";
 import { Button, Radio, RadioGroup, makeStyles, Field } from '@fluentui/react-components';
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
-
-//import { initializeIcons } from '@fluentui/react/lib/Icons';
-//initializeIcons(/* optional base url */);
-
-//const stackTokens: IStackTokens = { childrenGap: 20 };
 
 const useStyles = makeStyles({
   root: {
@@ -115,31 +109,6 @@ function Popup() {
     </div>
   );
 
-  {/* // return (<Stack tokens={stackTokens} styles={{ */ }
-  //   root: {
-  //     minWidth: '300px',
-  //   }
-  // }}>
-  //   <Stack>
-  //     <RadioGroup options={options} selectedKey={selectedKey} onChange={onChangeKey} label="选择一个配置" />
-  //     {
-  //       selectedKey === 'auto' ? <Button onClick={async () => {
-  //         await match();
-  //       }}>添加条件</Button> : <></>
-
-  //     }
-
-  //   </Stack>
-  //   <Stack horizontal horizontalAlign="space-between">
-  //     <Button appearance='primary' onClick={async () => {
-  //       await newIssue();
-  //     }}>创建 Issue</Button>
-  //     <Button onClick={async () => {
-  //       await setting();
-  //     }}>设置配置</Button>
-  //   </Stack>
-  // </Stack>
-  // );
 }
 const AppRoot = ({children}) => (
   <FluentProvider theme={webLightTheme}>

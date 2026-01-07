@@ -1,5 +1,4 @@
 import React from 'react';
-// import { IconButton } from '@fluentui/react';
 import { delProjectProfile } from './util';
 import { Button, makeStyles } from '@fluentui/react-components';
 import { DeleteRegular, EditRegular, TagRegular } from '@fluentui/react-icons';
@@ -37,15 +36,6 @@ export function Actions(props) {
 function DelAction(props) {
   const styles = useStyles();
   const { item, setUpdated } = props;
-  // return <Button
-  //   className={styles.del}
-  //   icon={<DeleteRegular />}
-  //   appearance='subtle'
-  //   aria-label='删除配置'
-  // onClick={async () => {
-  //   await delProjectProfile(item.profileName);
-  //   setUpdated(Date.now());
-  // }} />
   return (
     <Dialog>
       <DialogTrigger disableButtonEnhancement>

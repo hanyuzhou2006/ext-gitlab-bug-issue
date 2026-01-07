@@ -121,13 +121,6 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
       r.id === id ? { ...r, url: value } : r
     );
     setRules(newRules);
-    // const rule = { ...rules[id] };
-    // rule.url = value;
-    // const newRules = [
-    //   ...rules
-    // ]
-    // newRules[id] = rule;
-    // setRules(newRules);
   }
 
   function onProfileChange(id: number, value: string) {
@@ -135,13 +128,6 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
       r.id === id ? { ...r, profile: value } : r
     );
     setRules(newRules);
-    // const rule = { ...rules[id] };
-    // rule.profile = value;
-    // const newRules = [
-    //   ...rules
-    // ]
-    // newRules[id] = rule;
-    // setRules(newRules);
   }
 
   const columns: TableColumnDefinition<Rule>[] = [
@@ -149,19 +135,11 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
       columnId: 'order',
       renderHeaderCell: () => '排序',
       renderCell: () => null,
-        // return <Button
-        //   appearance='subtle'
-        //   style={{ cursor: 'move', }}
-        //   icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-        //     <path d="M5 5h2v2H5V5zm4 0h2v2H9V5zm-4 4h2v2H5V9zm4 0h2v2H9V9zm-4 4h2v2H5v-2zm4 0h2v2H9v-2z" />
-        //   </svg>}
-        // />
     }),
     createTableColumn({
       columnId: 'url',
       renderHeaderCell: () => '网址',
       renderCell(item) {
-        //const index = rules.indexOf(item);
         return <Input className={styles.fullWidth} value={item.url} type='text' onChange={(_, data) => {
           onUrlChange(item.id, data.value);
         }} />
@@ -188,7 +166,6 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
   ]
 
   function addDefaultRule() {
-    //const newRules = [...rules, {url: '', profile: '' }]
     setRules([...rules, createRule()]);
   }
 
@@ -214,13 +191,9 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
         sortable={false}
         getRowId={(item) => item.id}
         focusMode="composite"
-        //style={{ minWidth: "800px" }}
       >
         <DataGridHeader>
           <DataGridRow
-          // selectionCell={{
-          //   checkboxIndicator: { "aria-label": "Select all rows" },
-          // }}
           >
             {({ renderHeaderCell }) => (
               <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
@@ -235,52 +208,11 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
             rowId={rowId} 
             columns={columns} 
           />
-            // <DataGridRow<Rule>
-            //   key={rowId}
-            // >
-            //   {({ renderCell }) => (
-            //     <DataGridCell>{renderCell(item)}</DataGridCell>
-            //   )}
-            // </DataGridRow>
           )}
         </DataGridBody>
       </DataGrid>
         </SortableContext>
       </DndContext>
-      {/* <DataGrid items={rules} columns={columns}
-        resizableColumns
-        columnSizingOptions={columnSizingOptions}
-        sortable={false}
-        getRowId={(item) => item.url}
-        focusMode="composite"
-        style={{ minWidth: "800px" }}
-      >
-        <DataGridHeader>
-          <DataGridRow
-          // selectionCell={{
-          //   checkboxIndicator: { "aria-label": "Select all rows" },
-          // }}
-          >
-            {({ renderHeaderCell }) => (
-              <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
-            )}
-          </DataGridRow>
-        </DataGridHeader>
-        <DataGridBody<Rule>>
-          {({ item, rowId }) => (
-            <DataGridRow<Rule>
-              key={rowId}
-            // selectionCell={{
-            //   checkboxIndicator: { "aria-label": "Select row" },
-            // }}
-            >
-              {({ renderCell }) => (
-                <DataGridCell>{renderCell(item)}</DataGridCell>
-              )}
-            </DataGridRow>
-          )}
-        </DataGridBody>
-      </DataGrid> */}
       <div style={{ padding: '10px', width: '100%', boxSizing: 'border-box' }}>
         <Button icon={<AddRegular />} className={styles.button} onClick={() => setRules([...rules, createRule()])}
         ></Button>

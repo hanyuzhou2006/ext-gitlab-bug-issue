@@ -2,21 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { createRoot } from  'react-dom/client';
 import ReactDOM from "react-dom";
 import '@sansitech/react-img-editor/lib/index.css'
-//import { TextField } from '@fluentui/react/lib/TextField';
-//import { Stack, IStackTokens, IStackStyles } from '@fluentui/react/lib/Stack';
 import { getUserAgent, createIssueMarkDown, getSelectedProfile, extractVersion } from "./util";
 import { newIssue, uploadImage } from "./apis";
 import useNodeSize from "./useNodeSize";
 import { createScreenshot, Editor } from "./content-screenshot-editor";
 import { LabelProp } from "./gitlab-label";
-//import { initializeIcons } from '@fluentui/react/lib/Icons';
 import { Labels } from "./content-labels";
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 
 import { Input, Field, makeStyles, Button, Textarea } from '@fluentui/react-components';
-//import { TextField } from "@fluentui/react";
 
-//initializeIcons(/* optional base url */);
 
 const useStyles = makeStyles({
   root: {
@@ -40,23 +35,6 @@ const useStyles = makeStyles({
     gap: '20px',
   }
 });
-// const editorStyles: IStackStyles = {
-//   root: {
-//     width: '75%',
-//   }
-// }
-
-// const formStyles: IStackStyles = {
-//   root: {
-//     flexGrow: 1,
-//   }
-// }
-// const editorTokens: IStackTokens = {
-//   childrenGap: 20,
-// }
-// const formTokens: IStackTokens = {
-//   childrenGap: 20,
-// }
 
 async function getVersion(url: string, versionPath: string, extractionMode?: 'text' | 'json' | 'regex', extractionRule?: string) {
   const origin = new URL(url).origin;
@@ -204,59 +182,6 @@ function Content() {
       </div>
     </div>
   )
-
-  // return (
-  //   <Stack horizontal tokens={editorTokens} styles={{
-  //     root: { height: '100%' },
-  //   }}>
-  //     <Stack styles={editorStyles} >
-  //       <main ref={ref} style={{ height: '100%' }}>
-  //         <Editor width={width} height={height} stageRef={stageRef} url={screenshotUrl} />
-  //       </main>
-  //     </Stack>
-  //     <Stack tokens={formTokens} styles={formStyles}>
-  //       <TextField label="原始地址" value={url} readOnly />
-
-  //       <TextField label="版本" value={version} onChange={(e, value) => {
-  //         setVersion(value);
-  //       }} />
-
-  //       <TextField label="GitLab 项目地址" value={projectAddress} onChange={(e, value) => {
-  //         setProjectAddress(value);
-  //       }} errorMessage={checkProjectAddressMessage()} />
-
-  //       <TextField label="Gitlab private_token" value={privateToken} type="password" required
-  //         onChange={(e, value) => {
-  //           setPrivateToken(value);
-  //         }} errorMessage={checkPrivateTokenMessage()} />
-
-  //       <TextField label="标题" value={title} required onChange={(e, value) => {
-  //         setTitle(value);
-  //       }} errorMessage={checkTitleMessage()} />
-
-  //       <TextField label="环境" value={userAgent} readOnly />
-
-  //       <TextField label="重现步骤" multiline value={steps} required onChange={(e, value) => {
-  //         setSteps(value);
-  //       }} errorMessage={checkStepsMessage()} />
-
-  //       <TextField label="实际结果" multiline value={actual} required onChange={(e, value) => {
-  //         setActual(value);
-  //       }} errorMessage={checkActualMessage()} />
-
-  //       <TextField label="预期结果" multiline value={expected} required onChange={(e, value) => {
-  //         setExpected(value);
-  //       }} errorMessage={checkExpectedMessage()} />
-
-  //       <Labels labels={optionalLabels} onChange={(_e, labels) => {
-  //         setLabels(labels);
-  //       }} />
-  //       <Button appearance="primary" onClick={submit}>提交</Button>
-  //     </Stack>
-
-  //   </Stack>
-
-  // )
 
   function checkProjectAddressMessage(): string | JSX.Element {
     return checked && !projectAddress && '请输入 GitLab 项目地址';

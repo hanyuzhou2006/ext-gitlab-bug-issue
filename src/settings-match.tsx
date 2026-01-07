@@ -92,52 +92,6 @@ export function SettingsMatch() {
       </MessageBarBody>
       </MessageBar>
     </div>
-    // <Stack tokens={{
-    //   childrenGap: 20
-    // }}>
-    //   <Button appearance='primary' style={{
-    //     width: '200px'
-    //   }} onClick={() => {
-    //     toggleMode()
-    //   }}>切换编辑模式</Button>
-    //   {
-    //     mode === EditRuleMode.UI && (
-    //       <UIEditorMode rules={rules} setRules={(rules) => {
-    //         setRules(rules);
-    //         setDisabled(false);
-    //       }} />
-    //     )
-    //   }
-    //   {
-    //     mode === EditRuleMode.EDITOR && (
-    //       <>
-    //         <Label htmlFor='rules-editor'>智能匹配</Label>
-    //         <Textarea id='rules-editor'
-    //           value={rulesString}
-    //           rows={10}
-    //           onChange={(_e, data) => {
-    //             setRulesString(data.value);
-    //             setDisabled(false);
-    //           }} />
-    //       </>
-    //     )
-    //   }
-    //   <Button appearance='primary' value={'保存'} disabled={disabled} style={{
-    //     width: '100px',
-    //   }} onClick={() => {
-    //     if (mode === EditRuleMode.UI) {
-    //       commit(serializeRules(rules));
-    //     } else {
-    //       commit(rulesString);
-    //     }
-    //   }} />
-    //   <MessageBar>
-    //     匹配规则是: 网址中包含该关键字
-    //   </MessageBar>
-    //   <MessageBar>
-    //     注意：智能匹配只会匹配第一个条件，如果有多个条件，只会匹配第一个条件。
-    //   </MessageBar>
-    //</Stack>
   );
 }
 

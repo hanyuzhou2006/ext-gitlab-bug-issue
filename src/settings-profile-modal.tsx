@@ -1,11 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-//import { IStackTokens, IDropdownOption } from '@fluentui/react';
 import { newProjectProfile } from './util';
 import { listLabels } from './apis';
 import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
 import { Button, Input, makeStyles, Field, Dialog, DialogActions, DialogBody, DialogContent, DialogTitle, DialogSurface, Dropdown, tokens, Option } from '@fluentui/react-components';
-
-// const stackTokens: IStackTokens = { childrenGap: 20, padding: 20 };
 
 const extractionModeOptions = [
   { key: 'text', text: '全文本' },
@@ -14,22 +11,19 @@ const extractionModeOptions = [
 ];
 
 const useStyles = makeStyles({
-  // Stack (vertical)
   verticalStack: {
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
     padding: '20px',
-    width: '600px', // 对应原来的 styles.root.width
+    width: '600px', 
   },
-  // Stack (horizontal)
   horizontalStack: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: '40px',
   },
-  // Dialog 表面样式
   surface: {
     maxWidth: '640px', // 略大于 600px 以留出 padding
   }
@@ -140,44 +134,6 @@ export function NewProfileModal(props) {
       </DialogSurface>
     </Dialog>
   )
-  // <Modal isOpen={isModalOpened} onDismiss={closeModal} isBlocking={false}>
-  //   <Stack tokens={stackTokens} styles={{
-  //     root: {
-  //       width: '600px',
-  //     }
-  //   }}>
-  //     <Input ="名称" value={profileName} required onChange={(e, value) => {
-  //       setProfileName(value);
-  //     }} />
-  //     <Input label="GitLab 地址" value={projectAddress} required onChange={(e, value) => {
-  //       setProjectAddress(value);
-  //     }} />
-  //     <Input label="Gitlab private_token" value={privateToken} required onChange={(e, value) => {
-  //       setPrivateToken(value);
-  //     }} />
-  //     <Input label="版本路径" value={versionPath} onChange={(e, value) => {
-  //       setVersionPath(value);
-  //     }} />
-  //     <Dropdown label="版本解析模式" selectedKey={versionExtractionMode} options={extractionModeOptions} 
-  //       onChange={(e, option) => {
-  //         setVersionExtractionMode(option.key as 'text' | 'json' | 'regex');
-  //       }} />
-  //     <Input label="版本解析规则" value={versionExtractionRule} 
-  //       placeholder={getExtractionRulePlaceholder(versionExtractionMode)}
-  //       onChange={(e, value) => {
-  //         setVersionExtractionRule(value);
-  //       }} 
-  //       description={getExtractionRuleDescription(versionExtractionMode)}
-  //       disabled={versionExtractionMode === 'text'}
-  //     />
-  //     <Stack horizontal horizontalAlign='end' tokens={{
-  //       childrenGap: 40
-  //     }}>
-  //       <Button onClick={closeModal}>Cancel</Button>
-  //       <Button appearance='primary' onClick={newProfile}>New</Button>
-  //     </Stack>
-  //   </Stack>
-  // </Modal>
 }
 
 export function EditProfileMoal(props) {
@@ -256,43 +212,6 @@ export function EditProfileMoal(props) {
       </DialogSurface>
     </Dialog>
   )
-
-  // <Modal isOpen={isModalOpened} onDismiss={closeModal} isBlocking={false}>
-  //   <Stack tokens={stackTokens} styles={{
-  //     root: {
-  //       width: '600px',
-  //     }
-  //   }}>
-  //     <TextField label="名称" value={item.profileName} readOnly />
-  //     <TextField label="GitLab 地址" defaultValue={item.projectAddress} required componentRef={
-  //       projectAddressRef
-  //     } />
-  //     <TextField label="Gitlab private_token" defaultValue={item.privateToken} required componentRef={
-  //       privateTokenRef
-  //     } />
-  //     <TextField label="版本路径" defaultValue={item.versionPath} componentRef={
-  //       versionPathRef
-  //     } />
-  //     <Dropdown label="版本解析模式" selectedKey={versionExtractionMode} options={extractionModeOptions} 
-  //       onChange={(e, option) => {
-  //         setVersionExtractionMode(option.key as 'text' | 'json' | 'regex');
-  //       }} />
-  //     <TextField label="版本解析规则" value={versionExtractionRule} 
-  //       placeholder={getExtractionRulePlaceholder(versionExtractionMode)}
-  //       onChange={(e, value) => {
-  //         setVersionExtractionRule(value);
-  //       }} 
-  //       description={getExtractionRuleDescription(versionExtractionMode)}
-  //       disabled={versionExtractionMode === 'text'}
-  //     />
-  //     <Stack horizontal horizontalAlign='end' tokens={{
-  //       childrenGap: 40
-  //     }}>
-  //       <Button onClick={closeModal}>Cancel</Button>
-  //       <Button onClick={submit}>Update</Button>
-  //     </Stack>
-  //   </Stack>
-  // </Modal>
 }
 
 export function EditLabelsModal(props) {
@@ -345,26 +264,6 @@ export function EditLabelsModal(props) {
     setUpdated(Date.now());
   }
 
-  // function onChange(event: React.FormEvent<HTMLDivElement>, item: IDropdownOption) {
-  //   if (item) {
-  //     setSelectedKeys(
-  //       item.selected ? [...selectedKeys, item.key as string] : selectedKeys.filter(key => key !== item.key),
-  //     );
-  //   }
-  // };
-
-  // function onRenderOption(option): JSX.Element {
-  //   const label = option.data as LabelProp;
-  //   return <GitlabLabel name={label.name} color={label.color} textColor={label.textColor} />
-  // }
-
-  // function onRenderTitle(options) {
-  //   const labels = options.map(option => {
-  //     return option.data;
-  //   });
-  //   return <GitlabLabels labels={labels} />;
-  // }
-
   return (
     <Dialog open={isModalOpened} onOpenChange={closeModal}>
       <DialogSurface className={styles.surface}>
@@ -397,23 +296,4 @@ export function EditLabelsModal(props) {
       </DialogSurface>
     </Dialog>
   )
-  // <Modal isOpen={isModalOpened} onDismiss={closeModal} isBlocking={false}>
-  //   <Stack tokens={stackTokens} styles={{
-  //     root: {
-  //       width: '600px',
-  //     }
-  //   }}>
-  //     <TextField label="名称" value={item?.profileName} readOnly />
-  //     <Dropdown label="预置标签" options={options} multiSelect selectedKeys={selectedKeys} onChange={onChange}
-  //       onRenderOption={onRenderOption} onRenderTitle={onRenderTitle}
-  //     />
-  //     <Stack horizontal horizontalAlign='end' tokens={{
-  //       childrenGap: 40
-  //     }}>
-  //       <Button onClick={closeModal}>Cancel</Button>
-  //       <Button onClick={submit}>Update</Button>
-  //     </Stack>
-  //   </Stack>
-  // </Modal>
-
 }

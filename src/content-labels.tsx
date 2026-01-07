@@ -1,4 +1,3 @@
-//import { ChoiceGroup, IChoiceGroupOption, Stack } from '@fluentui/react';
 import React, { useEffect, useState, useRef } from 'react';
 import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
 import { RadioGroup, Radio, makeStyles } from '@fluentui/react-components';
@@ -71,21 +70,6 @@ export function Labels(props: { labels: LabelProp[], onChange: (e, labels: strin
               ))}
             </RadioGroup>
 
-            // const options: IChoiceGroupOption[] = labels.map(label => {
-            //   return {
-            //     key: label.name,
-            //     text: '',
-            //     onRenderField: (props, render) => {
-            //       return <>
-            //         {render!(props)}
-            //         {onRenderLabel(label)}
-            //       </>
-            //     },
-            //   }
-            // });
-            // return <ChoiceGroup key={scope} defaultSelectedKey={options[0]?.key} label={scope} options={options} onChange={(e, option) => {
-            //   onScopedLabelChanged(e, scope, option.key)
-            // }} />
           })
         }
       </>
