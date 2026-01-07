@@ -1,6 +1,6 @@
 {
   "name": "ext-gitlab-bug-issue",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A chromium extension to report bug issue to Gitlab",
   "main": "js/background.js",
   "scripts": {
