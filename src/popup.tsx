@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { createRoot } from  'react-dom/client';
-import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 import { getProfiles, getSelectedProfileName, setSelectedProfileName } from "./util";
 import { Button, Radio, RadioGroup, makeStyles, Field } from '@fluentui/react-components';
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
+
+interface ProfileOptions {
+  key: string;
+  text: string;
+}
 
 const useStyles = makeStyles({
   root: {
@@ -49,7 +53,7 @@ async function getOptions() {
     .concat({ key: 'auto', text: '智能匹配' });
 }
 function Popup() {
-  const [options, setOptions] = React.useState<IChoiceGroupOption[]>([]);
+  const [options, setOptions] = React.useState<ProfileOptions[]>([]);
   const [selectedKey, setSelectedKey] = React.useState('');
   const styles = useStyles();
   useEffect(() => {
