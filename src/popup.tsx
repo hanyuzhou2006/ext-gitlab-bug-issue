@@ -60,10 +60,7 @@ function Popup() {
       setSelectedKey(profileName);
     });
   }, []);
-  function onChangeKey(_e, option: IChoiceGroupOption) {
-    setSelectedKey(option.key as string);
-    setSelectedProfileName(option.key as string);
-  }
+
   return (
     <div className={styles.root}>
       <div className={styles.content}>

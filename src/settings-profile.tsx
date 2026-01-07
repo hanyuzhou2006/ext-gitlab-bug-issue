@@ -3,7 +3,7 @@ import { getProfiles, ProjectProfile } from './util'
 import { useBoolean } from '@fluentui/react-hooks';
 import { EditLabelsModal, EditProfileMoal, NewProfileModal } from './settings-profile-modal';
 import { Actions } from './settings-profile-actions';
-import { GitlabLabel, GitlabLabels } from './gitlab-label';
+import { GitlabLabels } from './gitlab-label';
 
 import { Button, MessageBar, DataGrid, DataGridBody, DataGridCell, DataGridHeader, DataGridRow, TableColumnDefinition, createTableColumn, makeStyles } from '@fluentui/react-components';
 

@@ -162,9 +162,6 @@ export function UIEditorMode(props: { rules: Rule[], setRules: (rules: Rule[]) =
     }),
   ]
 
-  function addDefaultRule() {
-    setRules([...rules, createRule()]);
-  }
 
   //处理拖拽结果
   const handleDragEnd = (event: DragEndEvent) => {

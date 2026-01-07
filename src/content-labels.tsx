@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
 import { RadioGroup, Radio, makeStyles } from '@fluentui/react-components';
 
@@ -47,11 +47,6 @@ export function Labels(props: { labels: LabelProp[], onChange: (e, labels: strin
     onChange(null, getSelectedLabels());
   }, [labels]);
 
-
-
-  function onRenderLabel(label: LabelProp): JSX.Element {
-    return <GitlabLabel name={label.name} color={label.color} textColor={label.textColor} />
-  }
 
   return <div className={styles.root}>
     <GitlabLabels labels={global} />
