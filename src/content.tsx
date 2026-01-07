@@ -143,15 +143,15 @@ function Content() {
             setVersion(data.value);
           }} />
         </Field>
-        <Field label="GitLab 项目地址" validationMessage={checkProjectAddressMessage()}>
+        <Field label="GitLab 项目地址" required validationMessage={checkProjectAddressMessage()}>
           <Input value={projectAddress} onChange={(e, data) => {
             setProjectAddress(data.value);
           }} />
         </Field>
-        <Field label="Gitlab private_token" validationMessage={checkPrivateTokenMessage()}>
+        <Field label="Gitlab private_token" required validationMessage={checkPrivateTokenMessage()}>
           <Input value={privateToken} type="password" required onChange={(e, data) => { setPrivateToken(data.value); }} />
         </Field>
-        <Field label="标题" validationMessage={checkTitleMessage()}>
+        <Field label="标题" required validationMessage={checkTitleMessage()}>
           <Input value={title} onChange={(e, data) => {
             setTitle(data.value);
           }} 
@@ -160,17 +160,17 @@ function Content() {
         <Field label="环境">
           <Input value={userAgent} readOnly/>
         </Field>
-        <Field label="重现步骤" validationMessage={checkActualMessage()}>
+        <Field label="重现步骤" required validationMessage={checkStepsMessage()}>
           <Textarea value={steps} required onChange={(e, data) => {
             setSteps(data.value);
             }} />
         </Field>
-        <Field label="实际结果" validationMessage={checkActualMessage()}>
+        <Field label="实际结果" required validationMessage={checkActualMessage()}>
           <Textarea value={actual} required onChange={(e, data) => {
             setActual(data.value);
             }} />
         </Field>
-        <Field label="预期结果" validationMessage={checkExpectedMessage()}>
+        <Field label="预期结果" required validationMessage={checkExpectedMessage()}>
           <Textarea value={expected} required onChange={(e, data) => {
             setExpected(data.value);
           }} />

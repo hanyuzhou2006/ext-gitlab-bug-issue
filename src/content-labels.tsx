@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
-import { RadioGroup, Radio, makeStyles } from '@fluentui/react-components';
+import { RadioGroup, Radio, makeStyles, Field } from '@fluentui/react-components';
 
 
 const useStyles = makeStyles({
@@ -54,20 +54,21 @@ export function Labels(props: { labels: LabelProp[], onChange: (e, labels: strin
       scoped.length ? <>
         {
           scoped.map(({ scope, labels }) => {
-            <RadioGroup key={scope} value={scopedSelections.current.find(s => s.scope === scope)?.key ?? labels[0].name}
-              onChange={(_,data) => {
-                onScopedLabelChanged(null,scope, data.value as string)
-              }}
-            >
-              {labels.map(label => (
-                <Radio key={label.name} value={label.name} label={<GitlabLabel
-                  name={label.name} color={label.color} textColor={label.textColor} />} />
-              ))}
-            </RadioGroup>
-
+           return <Field label={scope} key={scope}>
+              <RadioGroup value={scopedSelections.current.find(s => s.scope === scope)?.key ?? labels[0].name}
+                onChange={(_, data) => {
+                  onScopedLabelChanged(null, scope, data.value as string)
+                }}
+              >
+                {labels.map(label => (
+                  <Radio key={label.name} value={label.name} label={<GitlabLabel
+                    name={label.name} color={label.color} textColor={label.textColor} />} />
+                ))}
+              </RadioGroup>
+            </Field>
           })
         }
-      </>:<></>
+      </> : <></>
     }
   </div>
 }
