@@ -1,17 +1,24 @@
 import React from 'react';
-import { INavStyles, Nav } from "@fluentui/react"
-import { useLocation, Location } from 'react-router-dom';
+import { useLocation, useNavigate, Location } from 'react-router-dom';
 
-import { useResolvedPath } from 'react-router-dom'
-const navStyles: Partial<INavStyles> = {
+import { NavDrawer, NavItem, makeStyles, NavDrawerBody, tokens } from '@fluentui/react-components';
+
+import { useResolvedPath } from 'react-router-dom';
+
+const useStyles = makeStyles({
   root: {
-    width: 208,
-    height: 350,
+    width: '208px',
+    height: '350px',
     boxSizing: 'border-box',
-    border: '1px solid #eee',
-    overflowY: 'auto',
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
   },
-};
+  nav: {
+    width: '100%',
+    height: '100%',
+  },
+
+})
+
 
 const navProfile = {
   key: 'profile',
@@ -30,14 +37,6 @@ const navs = [
   navProfile,
   navMatch
 ]
-const navLinks = [
-  {
-    links: [
-      navProfile,
-      navMatch
-    ]
-  }
-]
 
 function getKey(location: Location) {
   let locationPathname = location.pathname;
@@ -47,16 +46,43 @@ function getKey(location: Location) {
     let toPathname = path.pathname;
     return locationPathname === toPathname || (locationPathname.startsWith(toPathname) &&
       locationPathname.charAt(toPathname.length) === "/");
-  })[0]?.key;
+  })[0]?.key || '';
 }
 
 
 export const SettingsNav = () => {
+  const styles = useStyles();
   const location = useLocation();
-  const key = getKey(location);
+
+  const navigate = useNavigate();
+  const selectedValue = getKey(location);
+
+
   return (
-    <Nav groups={navLinks} styles={navStyles}
-      selectedKey={key}
-    />
-  )
+    <div className={styles.root}>
+      <NavDrawer
+        className={styles.nav}
+        selectedValue={selectedValue}
+        type="inline"
+        open={true}
+        onNavItemSelect={(_, data) => {
+          const target = navs.find(n => n.key === data.value);
+          if (target) {
+            navigate(target.to);
+          }
+        }}
+      >
+        <NavDrawerBody>
+          {navs.map((nav) => (
+            <NavItem
+              key={nav.key}
+              value={nav.key}
+            >
+              {nav.name}
+            </NavItem>
+          ))}
+        </NavDrawerBody>
+      </NavDrawer>
+    </div>
+  );
 }

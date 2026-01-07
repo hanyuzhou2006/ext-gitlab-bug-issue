@@ -1,11 +1,30 @@
-import { ChoiceGroup, IChoiceGroupOption, Stack } from '@fluentui/react';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GitlabLabel, GitlabLabels, LabelProp } from './gitlab-label';
+import { RadioGroup, Radio, makeStyles, Field } from '@fluentui/react-components';
 
+
+const useStyles = makeStyles({
+  root: {
+    gap: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  scopeGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+  },
+  radioItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+  },
+});
 export function Labels(props: { labels: LabelProp[], onChange: (e, labels: string[]) => void }) {
   const { labels = [], onChange } = props;
   const { global, scoped } = groupByScope(labels);
   const scopedSelections = useRef<{ scope: string, key: string }[]>([]);
+  const styles = useStyles();
 
   function getSelectedLabels(): string[] {
     return [...global.map(label => label.name), ...scopedSelections.current.map(({ scope, key }) => key)];
@@ -29,41 +48,29 @@ export function Labels(props: { labels: LabelProp[], onChange: (e, labels: strin
   }, [labels]);
 
 
-
-  function onRenderLabel(label: LabelProp): JSX.Element {
-    return <GitlabLabel name={label.name} color={label.color} textColor={label.textColor} />
-  }
-
-  return <Stack tokens={
-    {
-      childrenGap: 10
-    }
-  }>
+  return <div className={styles.root}>
     <GitlabLabels labels={global} />
     {
-      scoped.length && <>
+      scoped.length ? <>
         {
           scoped.map(({ scope, labels }) => {
-            const options: IChoiceGroupOption[] = labels.map(label => {
-              return {
-                key: label.name,
-                text: '',
-                onRenderField: (props, render) => {
-                  return <>
-                    {render!(props)}
-                    {onRenderLabel(label)}
-                  </>
-                },
-              }
-            });
-            return <ChoiceGroup key={scope} defaultSelectedKey={options[0]?.key} label={scope} options={options} onChange={(e, option) => {
-              onScopedLabelChanged(e, scope, option.key)
-            }} />
+           return <Field label={scope} key={scope}>
+              <RadioGroup value={scopedSelections.current.find(s => s.scope === scope)?.key ?? labels[0].name}
+                onChange={(_, data) => {
+                  onScopedLabelChanged(null, scope, data.value as string)
+                }}
+              >
+                {labels.map(label => (
+                  <Radio key={label.name} value={label.name} label={<GitlabLabel
+                    name={label.name} color={label.color} textColor={label.textColor} />} />
+                ))}
+              </RadioGroup>
+            </Field>
           })
         }
-      </>
+      </> : <></>
     }
-  </Stack>
+  </div>
 }
 
 // if label.name contains '::', it is a scope label

@@ -205,6 +205,7 @@ export function translateProjectUrl(projectUrl: string) {
 }
 
 export type Rule = {
+  id: number;
   url: string,
   profile: string
 }
@@ -215,10 +216,11 @@ export type Rule = {
  */
 export function transRules(rulesString: string): Rule[] {
   const rules = rulesString.split('\n');
-  return rules.map(rule => {
+  return rules.map((rule,index) => {
     // split by ',' or empty space
     const ruleAttr = rule.split(/[,\s]+/);
     return {
+      id: index + 1,
       url: ruleAttr[0],
       profile: ruleAttr[1]
     }

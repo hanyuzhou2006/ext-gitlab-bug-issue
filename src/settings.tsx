@@ -1,22 +1,50 @@
 import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
-import { Stack, IStackTokens } from '@fluentui/react';
+import { createRoot } from 'react-dom/client';
 import { SettingsNav } from './settings-nav';
 import { SettingsProfile } from './settings-profile';
 import { SettingsMatch } from './settings-match';
 import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import { makeStyles } from '@fluentui/react-components';
+import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 
-const stackTokens: IStackTokens = { childrenGap: 20, padding: 20 };
 
+const useStyles = makeStyles({
+  commons: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    minWidth: 0,
+  },
+  onlet: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    flex: '1 1 auto',
+    minWidth: 0,
+    flexShrink: 1,
+    padding : '24px',
+  },
+  nav: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '208px'
+  }
+});
 function SettingsRoutes() {
 
   return (
-    <HashRouter>
+    <HashRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <Routes>
         <Route element={<SettingsApp />}>
           <Route path="/profile" element={<SettingsProfile />}></Route>
           <Route path='/match' element={<SettingsMatch />}></Route>
-          <Route path="/" element={<Navigate to="/profile" />}></Route>
+          <Route index element={<Navigate to="/profile" />}></Route>
         </Route>
       </Routes>
     </HashRouter>
@@ -24,23 +52,34 @@ function SettingsRoutes() {
 }
 
 function SettingsApp() {
+  const styles = useStyles();
   return <>
-    <Stack horizontal tokens={{
-      childrenGap: 20
-    }}>
-      <Stack>
+    <div className={styles.commons}>
+      <div className={styles.nav}>
         <SettingsNav />
-      </Stack>
-      <Stack styles={{
-        root: {
-          flexGrow: 1,
-        }
-      }}>
+      </div>
+      <div className={styles.onlet}>
         <Outlet />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   </>
 }
 
-ReactDOM.render(<SettingsRoutes />, document.getElementById('settings'));
+
+
+const AppRoot = ({ children }) => (
+  <FluentProvider theme={webLightTheme}>
+    {children}
+  </FluentProvider>
+);
+
+
+const App = () => (
+  <AppRoot>
+    <SettingsRoutes />
+  </AppRoot>
+);
+
+createRoot(document.getElementById('settings')).render(<App />);
+
 
